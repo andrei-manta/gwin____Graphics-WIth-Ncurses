@@ -1,16 +1,49 @@
 #include <ncurses.h>
+#include <math.h>
 
 int main()
 {
   initscr();
   cbreak();
+  noecho();
 
+  unsigned char c = 'O';
 
-  printw("Hello, World!");
-  refresh();
+  int center_x, center_y;
+  center_x = 30;
+  center_y = 30;
+  float radius = 10.0;
 
-  getch();
-  getch();
+  int desired_pos_x;
+  int desired_pos_y;
+
+  float timer = 0;
+  float timer_increment = 0.025;
+
+  int last_pos_x, last_pos_y;
+  last_pos_x = 0;
+  last_pos_y = 0;
+
+  while(1)
+  {
+    desired_pos_x = (int)((float)center_x + radius * sinf(timer));
+    desired_pos_y = (int)((float)center_y + radius * cosf(timer));
+
+    timer += timer_increment;
+    
+    move(last_pos_x, last_pos_y);
+    addch(' ');
+
+    move(desired_pos_x, desired_pos_y);
+    addch(c | A_BOLD);
+
+    last_pos_x = desired_pos_x;
+    last_pos_y = desired_pos_y;
+
+    refresh();
+
+    napms(25);
+  }
 
   endwin();
 
