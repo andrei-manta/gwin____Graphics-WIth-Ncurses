@@ -60,8 +60,17 @@ signed char draw_line_made_of_unformatted_ascii_char(signed char start_y, signed
 
   }
 
+  float length_of_the_requested_line = sqrtf(powf((float)(end_y - start_y), 2.0) + powf((float)(end_x - start_x), 2.0));
+  float x_slope_component = (float)(end_x - start_x) / length_of_the_requested_line;
+  float y_slope_component = (float)(end_y - start_y) / length_of_the_requested_line;
 
-  return 4;
+  for(float i = 0.0; i < length_of_the_requested_line; i += 1.0)
+  {
+    move(start_y + (int)roundf(y_slope_component * i), start_x + (int)roundf(x_slope_component * i));
+    addch(what_char_the_line_is_drawn_of);
+  }
+
+  return (signed char)0;
 
 
 }
