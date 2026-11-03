@@ -1,0 +1,55 @@
+#include <ncurses.h>
+
+signed char draw_line_made_of_unformatted_ascii_char(signed char start_y, signed char start_x,
+    signed char end_y, signed char end_x, unsigned char what_char_the_line_is_drawn_of)
+{
+
+
+  if (start_y < 0)
+  {
+    return (signed char)-1;
+  }
+
+  if (start_x < 0)
+  {
+    return (signed char)-2;
+  }
+
+  if (end_y < 0)
+  {
+    return (signed char)-3;
+  }
+
+  if (end_x < 0)
+  {
+    return (signed char)-4;
+  }
+
+
+  if (start_y == end_y)
+  {
+    
+    if (start_x == end_x)
+    {
+      move(start_y, start_x);
+      addch(what_char_the_line_is_drawn_of);
+      return (signed char)0;
+    }
+
+    for(int i = 0; i <= (end_x - start_x); i++)
+    {
+      move(start_y, start_x + i * (end_x > start_x? (int)1 : (int)-1));
+      addch(what_char_the_line_is_drawn_of);
+    }
+
+    return (signed char)0;
+  
+  }
+
+
+  if (start_x == end_x)
+  {
+    return 2;
+  }
+  return 4;
+}

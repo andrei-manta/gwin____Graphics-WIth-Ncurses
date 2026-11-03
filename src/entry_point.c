@@ -1,8 +1,11 @@
 #include <ncurses.h>
 #include <math.h>
+#include "line_drawing.h"
 
 int main()
 {
+
+
   initscr();
   cbreak();
   noecho();
@@ -27,23 +30,15 @@ int main()
 
   while(1)
   {
-    desired_pos_x = (int)(((float)center_x + radius * sinf(timer)) * screen_x_by_screen_y);
-    desired_pos_y = (int)((float)center_y + radius * cosf(timer));
 
-    timer += timer_increment;
-    
-    move(last_pos_y, last_pos_x);
-    addch(' ');
 
-    move(desired_pos_y, desired_pos_x);
-    addch(c | A_BOLD);
-
-    last_pos_x = desired_pos_x;
-    last_pos_y = desired_pos_y;
+    draw_line_made_of_unformatted_ascii_char(5, 10, 5, 30, (unsigned char)'I');
 
     refresh();
 
     napms(16);
+
+
   }
 
   endwin();
