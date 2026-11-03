@@ -1,7 +1,7 @@
 #include <ncurses.h>
 
-signed char draw_line_made_of_unformatted_ascii_char(signed char start_y, signed char start_x,
-    signed char end_y, signed char end_x, unsigned char what_char_the_line_is_drawn_of)
+signed char draw_line_made_of_formatted_ascii_char(signed char start_y, signed char start_x,
+    signed char end_y, signed char end_x, chtype what_char_the_line_is_drawn_of)
 {
 
 
