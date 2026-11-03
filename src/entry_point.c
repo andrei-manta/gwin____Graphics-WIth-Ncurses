@@ -34,6 +34,12 @@ int main()
 
     draw_line_made_of_unformatted_ascii_char(5, 10, 5, 30, (unsigned char)'I');
 
+    draw_line_made_of_unformatted_ascii_char(8, 10, 20, 10, (unsigned char)'O');
+
+    draw_line_made_of_unformatted_ascii_char(25, 55, 25, 15, (unsigned char)'A');
+
+    draw_line_made_of_unformatted_ascii_char(23, 55, 10, 55, (unsigned char)'B');
+
     refresh();
 
     napms(16);

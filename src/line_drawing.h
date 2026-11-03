@@ -36,9 +36,9 @@ signed char draw_line_made_of_unformatted_ascii_char(signed char start_y, signed
       return (signed char)0;
     }
 
-    for(int i = 0; i <= (end_x - start_x); i++)
+    for(int i = 0; i <= (end_x > start_x ? end_x - start_x : start_x - end_x); i++)
     {
-      move(start_y, start_x + i * (end_x > start_x? (int)1 : (int)-1));
+      move(start_y, start_x + i * (end_x > start_x ? (int)1 : (int)-1));
       addch(what_char_the_line_is_drawn_of);
     }
 
@@ -49,7 +49,19 @@ signed char draw_line_made_of_unformatted_ascii_char(signed char start_y, signed
 
   if (start_x == end_x)
   {
-    return 2;
+
+    for(int i = 0; i <= (end_y > start_y ? end_y - start_y : start_y - end_y); i++)
+    {
+      move(start_y + i * (end_y > start_y ? (int)1 : (int)-1), start_x);
+      addch(what_char_the_line_is_drawn_of);
+    }
+
+    return (signed char)0;
+
   }
+
+
   return 4;
+
+
 }
