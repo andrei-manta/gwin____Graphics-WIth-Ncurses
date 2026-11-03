@@ -7,7 +7,7 @@ signed char initcolor()
 
   for(int i = 1; i < 256; i++)
   {
-    init_color(i, i, i);
+    init_pair(i, i, i);
   }
 
   return (signed char)0;
