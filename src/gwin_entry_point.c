@@ -8,6 +8,10 @@ int main()
 
   gwin_init_terminal_graphics();
 
+  char debug_buf[64];
+  snprintf(debug_buf, 64, "Starting gwin entry point");
+  gwin_log(debug_buf);
+
   mvaddstr(5, 5, "\u2580");
   mvaddstr(10, 10, "\u2584");
   mvaddstr(15, 15, "\u2588");
@@ -19,7 +23,7 @@ int main()
 
   for(int x = 0; x < 5; x++)
     for(int y = 0; y < 5; y++)
-      set_logical_pixel_yx_to_rgb_and_refresh(y, x, 100, 0, 50);
+      set_logical_pixel_yx_to_rgb_and_refresh(y, x, 200, 200, 200);
 
   getch();
 

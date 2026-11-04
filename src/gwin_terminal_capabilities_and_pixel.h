@@ -77,7 +77,7 @@ signed char set_logical_pixel_yx_to_rgb_and_refresh(signed short y, signed short
     (_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].upper_pixel.rgb_color = color_number) : 
     (_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].lower_pixel.rgb_color = color_number);
 
-  mvaddch(y / 2, x, 'A' | COLOR_PAIR(color_number));
+  mvaddch(y / 2, x, 'A' | COLOR_PAIR(0)); //TODO - the color pair allocations in gwin_init_color() were changed, look there first
 
   char buf[32];
   snprintf(buf, 32, "color_number is:%d", color_number);
