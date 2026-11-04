@@ -1,14 +1,14 @@
 #include <ncurses.h>
-#include "line_drawing.h"
-#include "terminal_capabilities.h"
+#include "gwin_line_drawing.h"
+#include "gwin_terminal_capabilities.h"
 
 int main()
 {
 
 
-  terminal_capabilities tc;
+  gwin_terminal_capabilities tc;
 
-  init_terminal_graphics(&tc);
+  gwin_init_terminal_graphics(&tc);
 
   mvaddstr(5, 5, "\u2580");
   mvaddstr(10, 10, "\u2584");

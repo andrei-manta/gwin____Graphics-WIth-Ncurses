@@ -1,20 +1,20 @@
 #include <ncurses.h>
 #include <locale.h>
-#include "colors.h"
+#include "gwin_colors.h"
 
 typedef struct
 {
   int rows;
   int columns;
-}terminal_capabilities;
+}gwin_terminal_capabilities;
 
-signed char init_terminal_graphics(terminal_capabilities * tc)
+signed char gwin_init_terminal_graphics(gwin_terminal_capabilities * tc)
 {
   setlocale(LC_ALL, "");
   initscr();
   cbreak();
   noecho();
-  initcolor();
+  gwin_init_color();
 
   tc->rows = LINES;
   tc->columns = COLS;

@@ -1,7 +1,7 @@
 #include<ncurses.h>
 #include<math.h>
 
-signed char initcolor()
+signed char gwin_init_color()
 {
   start_color();
 
@@ -13,7 +13,7 @@ signed char initcolor()
   return (signed char)0;
 }
 
-chtype RGB_to_ncurses_solid_color(unsigned char R, unsigned char G, unsigned char B)
+chtype gwin_RGB_to_ncurses_solid_color(unsigned char R, unsigned char G, unsigned char B)
 {
   unsigned char R_to_color_cube_r = (unsigned char)(roundf((float)R / (float)255.0 * 5.0));
   unsigned char G_to_color_cube_g = (unsigned char)(roundf((float)G / (float)255.0 * 5.0));
