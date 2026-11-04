@@ -17,6 +17,10 @@ int main()
 
   refresh();
 
+  for(int x = 0; x < 5; x++)
+    for(int y = 0; y < 5; y++)
+      set_logical_pixel_yx_to_rgb_and_refresh(y, x, 100, 0, 50);
+
   getch();
 
   endwin();
