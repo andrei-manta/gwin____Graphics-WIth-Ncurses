@@ -2,6 +2,8 @@
 #include <locale.h>
 #include "gwin_colors.h"
 #include "gwin_constants.h"
+#include "gwin_logging.h"
+#include <stdio.h>
 
 
 typedef struct
@@ -38,6 +40,7 @@ signed char gwin_init_terminal_graphics()
   cbreak();
   noecho();
   gwin_init_color();
+  gwin_init_logging();
 
   _gwin_terminal_capabilities.rows = (signed short)LINES;
   _gwin_terminal_capabilities.columns = (signed short)COLS;
@@ -75,6 +78,10 @@ signed char set_logical_pixel_yx_to_rgb_and_refresh(signed short y, signed short
     (_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].lower_pixel.rgb_color = color_number);
 
   mvaddch(y / 2, x, 'A' | COLOR_PAIR(color_number));
+
+  char buf[32];
+  snprintf(buf, 32, "color_number is:%d", color_number);
+  gwin_log(buf);
 
   refresh();
 }
