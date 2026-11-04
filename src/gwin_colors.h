@@ -5,15 +5,18 @@ signed char gwin_init_color()
 {
   start_color();
 
-  for(int i = 1; i < 256; i++)
+  for(short fg = 1; fg < 256; fg++)
   {
-    init_pair(i, i, i);
+    for(short bg = 1; bg < 256; bg++)
+    {
+      init_pair(fg * 255 + bg, fg, bg);
+    }
   }
 
   return (signed char)0;
 }
 
-chtype gwin_RGB_to_ncurses_solid_color(unsigned char R, unsigned char G, unsigned char B)
+unsigned char gwin_RGB_to_ncurses_solid_color_with_alpha(unsigned char R, unsigned char G, unsigned char B)
 {
   unsigned char R_to_color_cube_r = (unsigned char)(roundf((float)R / (float)255.0 * 5.0));
   unsigned char G_to_color_cube_g = (unsigned char)(roundf((float)G / (float)255.0 * 5.0));
@@ -21,5 +24,5 @@ chtype gwin_RGB_to_ncurses_solid_color(unsigned char R, unsigned char G, unsigne
 
   unsigned char resulting_color = R_to_color_cube_r * 6 * 6 + G_to_color_cube_g * 6 + B_to_color_cube_b + 16;
 
-  return COLOR_PAIR(resulting_color);
+  return resulting_color;
 }
