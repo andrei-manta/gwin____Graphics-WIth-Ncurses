@@ -1,5 +1,8 @@
-#include <ncurses.h>
 #include <math.h>
+#define _XOPEN_SOURCE_EXTENDED
+#include <ncurses.h>
+
+
 
 signed char gwin_draw_line_made_of_formatted_ascii_char(signed char start_y, signed char start_x,
     signed char end_y, signed char end_x, chtype what_char_the_line_is_drawn_of)

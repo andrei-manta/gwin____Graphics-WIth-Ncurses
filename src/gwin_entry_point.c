@@ -1,6 +1,9 @@
-#include <ncurses.h>
 #include "gwin_line_drawing.h"
 #include "gwin_terminal_capabilities_and_pixel.h"
+#define _XOPEN_SOURCE_EXTENDED
+#include <ncursesw/ncurses.h>
+
+
 
 int main()
 {
@@ -18,6 +21,10 @@ int main()
   mvaddstr(20, 20, "\u281B");
   mvaddstr(25, 25, "\u28E4");
   mvaddstr(30, 30, "\u28FF");
+
+  cchar_t cc;
+  setcchar(&cc, L"\u28FF", A_NORMAL, 100, NULL);
+  mvadd_wch(20, 20, &cc);
 
   refresh();
 

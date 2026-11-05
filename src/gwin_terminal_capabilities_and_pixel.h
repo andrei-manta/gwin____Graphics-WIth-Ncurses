@@ -1,9 +1,11 @@
-#include <ncurses.h>
 #include <locale.h>
 #include "gwin_colors.h"
 #include "gwin_constants.h"
 #include "gwin_logging.h"
 #include <stdio.h>
+#define _XOPEN_SOURCE_EXTENDED
+#include <ncurses.h>
+
 
 
 typedef struct

@@ -1,5 +1,8 @@
-#include<ncurses.h>
 #include<math.h>
+#define _XOPEN_SOURCE_EXTENDED
+#include<ncurses.h>
+
+
 
 signed char gwin_init_color()
 {

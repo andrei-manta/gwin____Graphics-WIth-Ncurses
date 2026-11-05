@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include "gwin_constants.h"
+#define _XOPEN_SOURCE_EXTENDED
+
+
 
 signed char gwin_init_logging()
 {
