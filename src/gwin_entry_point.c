@@ -3,7 +3,7 @@
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
-
+extern gwin_terminal_capabilities _gwin_terminal_capabilities;
 
 int main()
 {
@@ -15,18 +15,16 @@ int main()
   snprintf(debug_buf, 64, "Starting gwin entry point");
   gwin_log(debug_buf);
 
-  mvaddstr(5, 5, "\u2580");
-  mvaddstr(10, 10, "\u2584");
-  mvaddstr(15, 15, "\u2588");
-  mvaddstr(20, 20, "\u281B");
-  mvaddstr(25, 25, "\u28E4");
-  mvaddstr(30, 30, "\u28FF");
+  int counter = 0;
 
-  refresh();
-
-  for(int x = 0; x < 5; x++)
-    for(int y = 0; y < 5; y++)
-      set_logical_pixel_yx_to_rgb_and_refresh(y, x, 200, 0, 0);
+  while(1)
+  {
+    for(int x = 0; x < _gwin_terminal_capabilities.logical_columns; x++)
+      for(int y = 0; y < _gwin_terminal_capabilities.logical_rows; y++)
+        set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(y, x, (x + counter) % 255, 0, (y + counter) % 255);
+    counter += 20;
+    napms(16);
+  }
 
   getch();
 

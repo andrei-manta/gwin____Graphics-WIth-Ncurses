@@ -42,6 +42,7 @@ signed char gwin_init_terminal_graphics()
   initscr();
   cbreak();
   noecho();
+  curs_set(0);
   gwin_init_color();
   gwin_init_logging();
 
@@ -69,7 +70,8 @@ signed char gwin_init_terminal_graphics()
   return (signed char)0;
 }
 
-signed char set_logical_pixel_yx_to_rgb_and_refresh(signed short y, signed short x, unsigned char R, unsigned char G, unsigned char B)
+signed char set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(
+    signed short y, signed short x, unsigned char R, unsigned char G, unsigned char B)
 {
   if(y < (signed short)0) return (signed char)-1;
   if(y > (signed short)_gwin_terminal_capabilities.logical_rows) return (signed char)-2;
@@ -78,12 +80,26 @@ signed char set_logical_pixel_yx_to_rgb_and_refresh(signed short y, signed short
 
   unsigned char color_number = gwin_RGB_to_ncurses_solid_color_with_alpha(R, G, B);
 
-  y % 2 == 0 ? 
-    (_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].upper_pixel.rgb_color = color_number) : 
-    (_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].lower_pixel.rgb_color = color_number);
-
-  setcchar(&_gwin_terminal_capabilities.physical_pixel_grid[y / 2][x].physical_cell_contents, L"\u28FF", A_NORMAL, color_number, NULL);
-  mvadd_wch(y / 2, x, &_gwin_terminal_capabilities.physical_pixel_grid[y / 2][x].physical_cell_contents);
+  if(y % 2 == 0)
+  {
+    _gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].upper_pixel.rgb_color = color_number;
+    int cell_color_pair = (int)color_number * (int)256 + 
+      (int)(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].lower_pixel.rgb_color);
+    setcchar(&(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents), L"\u2580", A_NORMAL, 
+      0, &cell_color_pair);
+    mvadd_wch((int)(y / (signed short)2), (int)x, 
+        &(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents));
+  }
+  if(y % 2 == 1)
+  {
+    _gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].lower_pixel.rgb_color = color_number;
+    int cell_color_pair = (int)(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].upper_pixel.rgb_color) * 
+      (int)256 + (int)color_number;
+    setcchar(&(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents), L"\u2580", A_NORMAL,
+        0, &cell_color_pair);
+    mvadd_wch((int)(y / (signed short)2), (int)x,
+        &(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents));
+  }
 
   char buf[32];
   snprintf(buf, 32, "color_number is:%d", color_number);
