@@ -7,10 +7,7 @@ signed char gwin_init_color()
 
   for(short fg = 1; fg < 256; fg++)
   {
-    for(short bg = 1; bg < 256; bg++)
-    {
-      init_pair(fg * 255 + bg, fg, bg);
-    }
+    init_pair(fg, fg, fg); //TODO should extend to the extended_color API and use larger types than chtype
   }
 
   return (signed char)0;
