@@ -101,10 +101,6 @@ signed char set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(
         &(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents));
   }
 
-  char buf[32];
-  snprintf(buf, 32, "color_number is:%d", color_number);
-  gwin_log(buf);
-
   refresh();
 }
 
