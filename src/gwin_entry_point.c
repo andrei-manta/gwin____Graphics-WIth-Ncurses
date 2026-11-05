@@ -22,10 +22,6 @@ int main()
   mvaddstr(25, 25, "\u28E4");
   mvaddstr(30, 30, "\u28FF");
 
-  cchar_t cc;
-  setcchar(&cc, L"\u28FF", A_NORMAL, 100, NULL);
-  mvadd_wch(20, 20, &cc);
-
   refresh();
 
   for(int x = 0; x < 5; x++)

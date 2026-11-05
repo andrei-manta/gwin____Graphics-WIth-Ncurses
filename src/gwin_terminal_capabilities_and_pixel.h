@@ -19,6 +19,7 @@ typedef struct
 {
   gwin_pixel upper_pixel;
   gwin_pixel lower_pixel;
+  cchar_t physical_cell_contents;
 }gwin_2pixel_cell;
 
 
@@ -60,6 +61,8 @@ signed char gwin_init_terminal_graphics()
       _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].lower_pixel.y = rows * 2 + 1;
       _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].lower_pixel.x = columns;
       _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].lower_pixel.rgb_color = START_OF_XTERM256_COLOR_CUBE_INCLUSIVE;
+    
+      setcchar(&_gwin_terminal_capabilities.physical_pixel_grid[rows][columns].physical_cell_contents, L"", A_NORMAL, 0, NULL);
     }
   }
 
@@ -79,7 +82,8 @@ signed char set_logical_pixel_yx_to_rgb_and_refresh(signed short y, signed short
     (_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].upper_pixel.rgb_color = color_number) : 
     (_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].lower_pixel.rgb_color = color_number);
 
-  mvaddch(y / 2, x, ' ' | COLOR_PAIR(color_number)); //TODO - the color pair allocations in gwin_init_color() were changed, look there first
+  setcchar(&_gwin_terminal_capabilities.physical_pixel_grid[y / 2][x].physical_cell_contents, L"\u28FF", A_NORMAL, color_number, NULL);
+  mvadd_wch(y / 2, x, &_gwin_terminal_capabilities.physical_pixel_grid[y / 2][x].physical_cell_contents);
 
   char buf[32];
   snprintf(buf, 32, "color_number is:%d", color_number);
