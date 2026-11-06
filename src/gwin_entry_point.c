@@ -1,5 +1,4 @@
-#include "gwin_line_drawing.h"
-#include "gwin_terminal_capabilities_and_pixel.h"
+#include "gwin_library.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
@@ -19,10 +18,11 @@ int main()
 
   while(1)
   {
-    for(int x = 0; x < _gwin_terminal_capabilities.logical_columns; x++)
-      for(int y = 0; y < _gwin_terminal_capabilities.logical_rows; y++)
-        set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(y, x, (x + counter) % 255, 0, (y + counter) % 255);
-    counter += 20;
+    gwin_draw_line_made_of_one_color((counter) % _gwin_terminal_capabilities.logical_rows, 
+                                     (counter) % _gwin_terminal_capabilities.logical_columns, 
+                                     10, 10,
+                                     (counter) % 255, 0, (counter) % 255);
+    counter += 4;
     napms(16);
   }
 
