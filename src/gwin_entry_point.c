@@ -18,7 +18,7 @@ int main()
 
   int counter = 0;
 
-  while(1)
+  /*while(1)
   {
     gwin_draw_line_made_of_one_color((counter) % _gwin_terminal_capabilities.logical_rows, 
                                      (counter) % _gwin_terminal_capabilities.logical_columns, 
@@ -26,7 +26,7 @@ int main()
                                      (counter) % 255, (counter * counter) % 255, (counter * counter * counter) % 255);
     counter += 20;
     napms(16);
-  }
+  }*/
 
   getch();
 
