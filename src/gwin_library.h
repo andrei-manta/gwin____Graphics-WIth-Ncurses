@@ -2,6 +2,8 @@
 #include <math.h>
 #include <locale.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "gwin_logging.h"
 #include "gwin_constants.h"
 #define _XOPEN_SOURCE_EXTENDED
@@ -198,5 +200,105 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
   return (signed char)0;
 
 }
+
+signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_folder)
+{
+  char debug_buf[64];
+
+  FILE *f = fopen(file_name_from_current_folder, "r");
+
+  snprintf(debug_buf, 64, "Past the file open");
+  gwin_log(debug_buf);
+
+  // skip P6 magic number
+  while(1)
+  {
+    unsigned char c = (unsigned char)fgetc(f);
+    if(c == (unsigned char)'\n')
+    {
+      break;
+    }
+  }
+
+  snprintf(debug_buf, 64, "Past the magic number");
+  gwin_log(debug_buf);
+
+  // read width space height
+  unsigned char buf[64];
+  memset(buf, 0, 64);
+  int buf_pointer = 0;
+  while(1)
+  {
+    unsigned char c = (unsigned char)fgetc(f);
+    if(c == (unsigned char)'\n')
+    {
+      break;
+    }
+    buf[buf_pointer++] = c;
+  }
+
+  snprintf(debug_buf, 64, "Past the row of w h");
+  gwin_log(debug_buf);
+
+  unsigned char first_number_buffer[64];
+  memset(first_number_buffer, 0, 64);
+  int number_buffer_pointer = 0;
+  while(1)
+  {
+    if(buf[number_buffer_pointer] == (unsigned char)' ')
+    {
+      break;
+    }
+    first_number_buffer[number_buffer_pointer] = buf[number_buffer_pointer];
+    number_buffer_pointer++;
+  }
+  number_buffer_pointer++;
+
+  snprintf(debug_buf, 64, "Past copying the firsrt number");
+  gwin_log(debug_buf);
+
+  unsigned char second_number_buffer[64];
+  memset(second_number_buffer, 0, 64);
+  int second_buffer_pointer = 0;
+  while(1)
+  {
+    if(buf[number_buffer_pointer] == (unsigned char)'\0')
+    {
+      break;
+    }
+    second_number_buffer[second_buffer_pointer++] = buf[number_buffer_pointer];
+    number_buffer_pointer++;
+  }
+
+  snprintf(debug_buf, 64, "Past copying the second number");
+  gwin_log(debug_buf);
+
+  int width = (int)strtol(first_number_buffer, NULL, 10);
+  int height = (int)strtol(second_number_buffer, NULL, 10);
+
+  while(1)
+  {
+    unsigned char c = (unsigned char)fgetc(f);
+    if(c == (unsigned char)'\n')
+    {
+      break;
+    }
+  }
+
+  snprintf(debug_buf, 64, "P6 w h result:");
+  gwin_log(debug_buf);
+
+  snprintf(debug_buf, 64, first_number_buffer);
+  gwin_log(debug_buf);
+
+  snprintf(debug_buf, 64, second_number_buffer);
+  gwin_log(debug_buf);
+
+  fclose(f);
+}
+
+
+
+
 
 

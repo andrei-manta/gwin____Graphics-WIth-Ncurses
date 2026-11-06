@@ -56,3 +56,9 @@ dkms.conf
 
 # gwin log files
 gwin_log.txt
+
+#Linux zone identifiers (get created when pasting in a file from Windows into wsl)
+*Zone.Identifier
+
+#.ppm image files
+*.ppm

@@ -14,6 +14,8 @@ int main()
   snprintf(debug_buf, 64, "Starting gwin entry point");
   gwin_log(debug_buf);
 
+  gwin_display_P6_PPM_file_in_terminal("./a.ppm");
+
   int counter = 0;
 
   while(1)
@@ -21,8 +23,8 @@ int main()
     gwin_draw_line_made_of_one_color((counter) % _gwin_terminal_capabilities.logical_rows, 
                                      (counter) % _gwin_terminal_capabilities.logical_columns, 
                                      10, 10,
-                                     (counter) % 255, 0, (counter) % 255);
-    counter += 4;
+                                     (counter) % 255, (counter * counter) % 255, (counter * counter * counter) % 255);
+    counter += 20;
     napms(16);
   }
 
