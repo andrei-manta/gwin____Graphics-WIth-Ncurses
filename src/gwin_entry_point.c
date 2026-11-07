@@ -1,3 +1,5 @@
+// remember to add each .c file in the kwargs of the compiler
+
 #include "gwin_library.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
