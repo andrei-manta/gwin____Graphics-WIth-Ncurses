@@ -1,11 +1,11 @@
-
 #include <math.h>
 #include <locale.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "gwin_logging.h"
 #include "gwin_constants.h"
+#include "gwin_colors.h"
+#include "gwin_logging.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
@@ -35,33 +35,6 @@ typedef struct
 }gwin_terminal_capabilities;
 
 gwin_terminal_capabilities _gwin_terminal_capabilities;
-
-signed char gwin_init_color()
-{
-  start_color();
-
-  for(int fg = 1; fg < 256; fg++)
-  {
-    for(int bg = 1; bg < 256; bg++)
-    {
-      init_extended_pair(fg * 256 + bg, fg, bg);
-    }
-  }
-
-  return (signed char)0;
-}
-
-unsigned char gwin_RGB_to_ncurses_solid_color_with_alpha(unsigned char R, unsigned char G, unsigned char B)
-{
-  unsigned char R_to_color_cube_r = (unsigned char)(roundf((float)R / (float)255.0 * 5.0));
-  unsigned char G_to_color_cube_g = (unsigned char)(roundf((float)G / (float)255.0 * 5.0));
-  unsigned char B_to_color_cube_b = (unsigned char)(roundf((float)B / (float)255.0 * 5.0));
-
-  unsigned char resulting_color = R_to_color_cube_r * 6 * 6 + G_to_color_cube_g * 6 + B_to_color_cube_b + 16;
-
-  return resulting_color;
-}
-
 
 signed char gwin_init_terminal_graphics()
 {
@@ -203,12 +176,8 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
 signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_folder)
 {
-  char debug_buf[64];
 
   FILE *f = fopen(file_name_from_current_folder, "r");
-
-  snprintf(debug_buf, 64, "Past the file open");
-  gwin_log(debug_buf);
 
   // skip P6 magic number
   while(1)
@@ -219,9 +188,6 @@ signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_fo
       break;
     }
   }
-
-  snprintf(debug_buf, 64, "Past the magic number");
-  gwin_log(debug_buf);
 
   // read width space height
   unsigned char buf[64];
@@ -237,9 +203,6 @@ signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_fo
     buf[buf_pointer++] = c;
   }
 
-  snprintf(debug_buf, 64, "Past the row of w h");
-  gwin_log(debug_buf);
-
   unsigned char first_number_buffer[64];
   memset(first_number_buffer, 0, 64);
   int number_buffer_pointer = 0;
@@ -254,9 +217,6 @@ signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_fo
   }
   number_buffer_pointer++;
 
-  snprintf(debug_buf, 64, "Past copying the firsrt number");
-  gwin_log(debug_buf);
-
   unsigned char second_number_buffer[64];
   memset(second_number_buffer, 0, 64);
   int second_buffer_pointer = 0;
@@ -270,9 +230,6 @@ signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_fo
     number_buffer_pointer++;
   }
 
-  snprintf(debug_buf, 64, "Past copying the second number");
-  gwin_log(debug_buf);
-
   int width = (int)strtol(first_number_buffer, NULL, 10);
   int height = (int)strtol(second_number_buffer, NULL, 10);
 
@@ -284,15 +241,6 @@ signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_fo
       break;
     }
   }
-
-  snprintf(debug_buf, 64, "P6 w h result:");
-  gwin_log(debug_buf);
-
-  snprintf(debug_buf, 64, first_number_buffer);
-  gwin_log(debug_buf);
-
-  snprintf(debug_buf, 64, second_number_buffer);
-  gwin_log(debug_buf);
 
   unsigned char rgb_buffer[3];
   int pixels_read = 0;
