@@ -87,3 +87,25 @@ signed char gwin_draw_point(signed short y, signed short x, unsigned char R, uns
 
   set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(y, x, R, G, B);
 }
+
+signed char gwin_draw_circle_made_of_one_color(signed short center_y, signed short center_x, 
+    signed short pixel_radius, unsigned char R, unsigned char G, unsigned char B)
+{
+  if(center_y < (signed short)0)
+  {
+    return (signed char)-1;
+  }
+  if(center_x < (signed short)0)
+  {
+    return (signed char)-2;
+  }
+  if(pixel_radius < (signed short)0)
+  {
+    return (signed char)-3;
+  }
+
+  //TODO use the gwin_pixels.h function for pixel to pixel distance on a square grid around the center to decide
+  //which point gets colored in, or perhaps use draw_line and draw horizontal lines
+
+  return (signed char)0;  
+}
