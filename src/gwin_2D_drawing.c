@@ -1,6 +1,4 @@
 #include <math.h>
-#include "gwin_constants.h"
-#include "gwin_colors.h"
 #include "gwin_pixels.h"
 #include "gwin_2D_drawing.h"
 #define _XOPEN_SOURCE_EXTENDED

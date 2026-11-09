@@ -1,7 +1,6 @@
-#include "gwin_colors.h"
-
 #include <math.h>
-#include "gwin_constants.h"
+#include "gwin_colors.h"
+#include "gwin_terminal_capabilities.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 

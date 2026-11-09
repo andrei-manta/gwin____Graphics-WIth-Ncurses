@@ -1,8 +1,10 @@
+#ifndef GWIN_TERMINAL_CAPABILITIES_H
+#define GWIN_TERMINAL_CAPABILITIES_H
+
 #include "gwin_constants.h"
 #include "gwin_pixels.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
-
 
 typedef struct
 {
@@ -13,6 +15,8 @@ typedef struct
   signed short logical_columns;
 }gwin_terminal_capabilities;
 
-gwin_terminal_capabilities _gwin_terminal_capabilities;
+extern gwin_terminal_capabilities _gwin_terminal_capabilities;
 
 signed char gwin_init_terminal_graphics();
+
+#endif

@@ -1,14 +1,13 @@
 // remember to add each .c file in the kwargs of the compiler
 
-#include "gwin_library.h"
+#include "gwin_terminal_capabilities.h"
+#include "gwin_PPM_file_handling.h"
+#include "gwin_logging.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
-extern gwin_terminal_capabilities _gwin_terminal_capabilities;
-
 int main()
 {
-
 
   gwin_init_terminal_graphics();
 

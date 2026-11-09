@@ -1,12 +1,9 @@
 #include <math.h>
 #include "gwin_colors.h"
 #include "gwin_pixels.h"
+#include "gwin_terminal_capabilities.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
-
-
-// TODO must include some term_caps for this extern to resolve
-extern gwin_terminal_capabilities _gwin_terminal_capabilities;
 
 signed char set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(
     signed short y, signed short x, unsigned char R, unsigned char G, unsigned char B)
