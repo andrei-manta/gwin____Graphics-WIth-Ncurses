@@ -6,6 +6,8 @@
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
+gwin_terminal_capabilities _gwin_terminal_capabilities;
+
 signed char gwin_init_terminal_graphics()
 {
   setlocale(LC_ALL, "");
