@@ -74,3 +74,16 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
 }
 
+signed char gwin_draw_point(signed short y, signed short x, unsigned char R, unsigned char G, unsigned char B)
+{
+  if(y < (signed short)0)
+  {
+    return (signed char)-1;
+  }
+  if(x < (signed short)0)
+  {
+    return (signed short)-2;
+  }
+
+  set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(y, x, R, G, B);
+}

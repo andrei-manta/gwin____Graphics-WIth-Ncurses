@@ -1,8 +1,8 @@
 // remember to add each .c file in the kwargs of the compiler
 
 #include "gwin_terminal_capabilities.h"
-#include "gwin_PPM_file_handling.h"
 #include "gwin_logging.h"
+#include "gwin_2D_drawing.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
@@ -15,19 +15,7 @@ int main()
   snprintf(debug_buf, 64, "Starting gwin entry point");
   gwin_log(debug_buf);
 
-  gwin_display_P6_PPM_file_in_terminal("./a.ppm");
-
-  int counter = 0;
-
-  /*while(1)
-  {
-    gwin_draw_line_made_of_one_color((counter) % _gwin_terminal_capabilities.logical_rows, 
-                                     (counter) % _gwin_terminal_capabilities.logical_columns, 
-                                     10, 10,
-                                     (counter) % 255, (counter * counter) % 255, (counter * counter * counter) % 255);
-    counter += 20;
-    napms(16);
-  }*/
+  gwin_draw_point((signed short)10, (signed short)20, (unsigned char)200, (unsigned char)0, (unsigned char)50);
 
   getch();
 
