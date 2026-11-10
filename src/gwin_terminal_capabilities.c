@@ -3,6 +3,7 @@
 #include "gwin_terminal_capabilities.h"
 #include "gwin_colors.h"
 #include "gwin_logging.h"
+#include "gwin_error_handling.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
@@ -17,6 +18,7 @@ signed char gwin_init_terminal_graphics()
   curs_set(0);
   gwin_init_color();
   gwin_init_logging();
+  gwin_init_error_logging();
 
   _gwin_terminal_capabilities.rows = (signed short)LINES;
   _gwin_terminal_capabilities.columns = (signed short)COLS;
