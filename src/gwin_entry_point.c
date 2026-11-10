@@ -14,8 +14,15 @@ int main()
   char debug_buf[64];
   snprintf(debug_buf, 64, "Starting gwin entry point");
   gwin_log(debug_buf);
+  
+  int counter = 0;
+  while(1)
+  {
+    gwin_draw_circle_made_of_one_color((40 + counter) % 50, (40 + counter / 2) % 50, (10 + counter) % 15, (100 + counter) % 255, 0, 100);
+    counter++;
 
-  gwin_draw_point((signed short)10, (signed short)20, (unsigned char)200, (unsigned char)0, (unsigned char)50);
+    napms(16);
+  }
 
   getch();
 

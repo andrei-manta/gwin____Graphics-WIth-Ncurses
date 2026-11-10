@@ -104,8 +104,20 @@ signed char gwin_draw_circle_made_of_one_color(signed short center_y, signed sho
     return (signed char)-3;
   }
 
-  //TODO use the gwin_pixels.h function for pixel to pixel distance on a square grid around the center to decide
-  //which point gets colored in, or perhaps use draw_line and draw horizontal lines
+  // TODO what happens on overflow in these kinds of operations? Consider that throughout the drawing,
+  // perhaps add a virtual drawing space that gets sync'd to the real one
+  for(int rows = (int)(center_y - pixel_radius); rows <= (int)(center_y + pixel_radius); rows++)
+  {
+    for(int columns = (int)(center_x - pixel_radius); columns <= (int)(center_x + pixel_radius); columns++)
+    {
+      float distance_to_circle_center_for_this_pixel = 0.0;
+      compute_as_float_distance_between_two_logical_pixels(center_y, center_x, rows, columns, &distance_to_circle_center_for_this_pixel);
+      if(distance_to_circle_center_for_this_pixel <= (float)pixel_radius)
+      {
+        set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(rows, columns, R, G, B);
+      }
+    }
+  }
 
   return (signed char)0;  
 }
