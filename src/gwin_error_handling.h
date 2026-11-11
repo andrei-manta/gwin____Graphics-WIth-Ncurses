@@ -17,4 +17,5 @@ typedef struct{
 extern gwin_error_log _gwin_error_log;
 
 signed char gwin_init_error_logging();
-signed char gwin_log_function_error(char *what_function_failed, signed char failure_code);
+signed char gwin_log_function_error(char *what_function_failed, char *failure_reason);
+signed char gwin_print_error_log();
