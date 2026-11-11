@@ -16,7 +16,7 @@ signed char gwin_init_color()
     }
   }
 
-  return (signed char)0;
+  return (signed char)-1;
 }
 
 unsigned char gwin_RGB_to_ncurses_solid_color_with_alpha(unsigned char R, unsigned char G, unsigned char B)
