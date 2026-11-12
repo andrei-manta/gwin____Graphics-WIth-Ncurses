@@ -13,7 +13,8 @@ signed char set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(
   if(x < (signed short)0) return (signed char)-3;
   if(x > (signed short)_gwin_terminal_capabilities.logical_columns) return (signed char)-4;
 
-  unsigned char color_number = gwin_RGB_to_ncurses_solid_color_with_alpha(R, G, B);
+  unsigned char color_number;
+  gwin_RGB_to_ncurses_solid_color_with_alpha(&color_number, R, G, B);
 
   if(y % 2 == 0)
   {

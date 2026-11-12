@@ -19,7 +19,8 @@ signed char gwin_init_color()
   return (signed char)-1;
 }
 
-unsigned char gwin_RGB_to_ncurses_solid_color_with_alpha(unsigned char R, unsigned char G, unsigned char B)
+signed char gwin_RGB_to_ncurses_solid_color_with_alpha(unsigned char *where_to_store_the_result,
+  unsigned char R, unsigned char G, unsigned char B)
 {
   unsigned char R_to_color_cube_r = (unsigned char)(roundf((float)R / (float)255.0 * 5.0));
   unsigned char G_to_color_cube_g = (unsigned char)(roundf((float)G / (float)255.0 * 5.0));
@@ -27,6 +28,8 @@ unsigned char gwin_RGB_to_ncurses_solid_color_with_alpha(unsigned char R, unsign
 
   unsigned char resulting_color = R_to_color_cube_r * 6 * 6 + G_to_color_cube_g * 6 + B_to_color_cube_b + 16;
 
-  return resulting_color;
+  *where_to_store_the_result = resulting_color;
+
+  return (signed char)0;
 }
 

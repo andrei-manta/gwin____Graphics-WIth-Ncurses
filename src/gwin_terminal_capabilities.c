@@ -18,21 +18,30 @@ signed char gwin_init_terminal_graphics()
   cbreak();
   noecho();
   curs_set(0);
-  signed char gwin_init_color_ret = gwin_init_color();
-  gwin_init_logging();
-  gwin_init_error_logging();
+  signed char gwin_init_color_return = gwin_init_color();
+  signed char gwin_init_logging_return = gwin_init_logging();
+  signed char gwin_init_error_logging_return = gwin_init_error_logging();
 
-  if(gwin_init_color_ret != (signed char)0)
+  if(gwin_init_color_return != (signed char)0)
   {
-    char what_function_failed[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
-    memset(what_function_failed, (char)0, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES);
-    snprintf(what_function_failed, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "gwin_init_color()");
-    what_function_failed[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
     char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
-    memset(failure_reason, (char)0, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES);
-    snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", gwin_init_color_ret);
+    snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", gwin_init_color_return);
     failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
-    gwin_log_function_error(what_function_failed, failure_reason);
+    gwin_log_function_error("gwin_init_color()", failure_reason, "gwin_init_terminal_graphics()");
+
+    return (signed char)-1;
+  }
+
+  if(gwin_init_logging_return != (signed char)0)
+  {
+    //can't log an error in the logging systems
+    return (signed char)-1;
+  }
+
+  if(gwin_init_error_logging_return != (signed char)0)
+  {
+    //can't log an error in the logging systems
+    return (signed char)-1;
   }
 
   _gwin_terminal_capabilities.rows = (signed short)LINES;

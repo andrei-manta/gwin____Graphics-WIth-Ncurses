@@ -17,13 +17,18 @@ signed char gwin_init_error_logging()
   return (signed char)0;
 }
 
-signed char gwin_log_function_error(char *what_function_failed, char *failure_reason)
+signed char gwin_log_function_error(char *what_function_failed, char *failure_reason, char *function_that_detected_the_failure)
 {
   if(what_function_failed == (char *)NULL)
   {
     return (signed char)-1;
   }
   if(failure_reason == (char *)NULL)
+  {
+    return (signed char)-1;
+  }
+
+  if(function_that_detected_the_failure == (char*)NULL)
   {
     return (signed char)-1;
   }
@@ -57,10 +62,20 @@ signed char gwin_log_function_error(char *what_function_failed, char *failure_re
     return (signed char)-1;
   }
 
+  _gwin_error_log.last_error->function_that_detected_the_failure = (char *)malloc((size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES * sizeof(char));
+  if(_gwin_error_log.last_error->function_that_detected_the_failure == (char *)NULL)
+  {
+    return (signed char)-1;
+  }
+
   strncpy(_gwin_error_log.last_error->what_function_failed, what_function_failed, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES);
   _gwin_error_log.last_error->what_function_failed[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (unsigned char)'\0';
 
   strncpy(_gwin_error_log.last_error->failure_reason, failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES);
+  _gwin_error_log.last_error->failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (unsigned char)'\0';
+
+  strncpy(_gwin_error_log.last_error->function_that_detected_the_failure, function_that_detected_the_failure,
+          (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES);
   _gwin_error_log.last_error->failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (unsigned char)'\0';
 
   return (signed char)0;
