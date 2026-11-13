@@ -1,5 +1,6 @@
 // remember to add each .c file in the kwargs of the compiler
 
+#include <stdio.h>
 #include "gwin_terminal_capabilities.h"
 #include "gwin_logging.h"
 #include "gwin_error_handling.h"
@@ -7,10 +8,17 @@
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
-int main()
+signed int main()
 {
 
-  gwin_init_terminal_graphics();
+  signed char gwin_init_terminal_graphics_return = gwin_init_terminal_graphics();
+
+  if(gwin_init_terminal_graphics_return != (signed char)0)
+  {
+    printf("Error number:%d in gwin initialisation. Aborting.\n", (signed int)gwin_init_terminal_graphics_return);
+
+    return (signed int)-1;
+  }
 
   char debug_buf[64];
   snprintf(debug_buf, 64, "Starting gwin entry point");
@@ -22,7 +30,5 @@ int main()
 
   gwin_print_error_log();
 
-  return 0;
-
-
+  return (signed int)0;
 }
