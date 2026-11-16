@@ -10,7 +10,8 @@ typedef struct
 {
   signed short rows;
   signed short columns;
-  gwin_2pixel_cell physical_pixel_grid[MAXIMUM_SUPPORTED_TERMINAL_CELL_ROWS][MAXIMUM_SUPPORTED_TERMINAL_CELL_COLUMNS];
+  gwin_2pixel_cell physical_pixel_grid[(signed short)MAXIMUM_SUPPORTED_TERMINAL_CELL_ROWS]
+  [(signed short)MAXIMUM_SUPPORTED_TERMINAL_CELL_COLUMNS];
   signed short logical_rows;
   signed short logical_columns;
 }gwin_terminal_capabilities;
