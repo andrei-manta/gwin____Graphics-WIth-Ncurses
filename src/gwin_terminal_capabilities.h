@@ -20,4 +20,7 @@ extern gwin_terminal_capabilities _gwin_terminal_capabilities;
 
 signed char gwin_init_terminal_graphics();
 
+signed char gwin_get_terminal_size(signed short *where_to_store_lines,
+    signed short *where_to_store_columns);
+
 #endif

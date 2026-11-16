@@ -66,9 +66,20 @@ signed char gwin_init_terminal_graphics()
     return (signed char)-1;
   }
 
+  signed char gwin_get_terminal_size_return = gwin_get_terminal_size(&_gwin_terminal_capabilities.rows, &_gwin_terminal_capabilities.columns);
+  
+  if(gwin_get_terminal_size != (signed char)0)
+  {
+    char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
+    snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", gwin_get_terminal_size_return);
+    failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
+    gwin_log_function_error("gwin_get_terminal_size()", failure_reason, "gwin_init_terminal_graphics()");
 
-  _gwin_terminal_capabilities.rows = (signed short)LINES;
-  _gwin_terminal_capabilities.columns = (signed short)COLS;
+    return (signed char)-1;
+  }
+
+  //TODO find other places where get_terminal_size should be used
+
   _gwin_terminal_capabilities.logical_rows = _gwin_terminal_capabilities.rows * (signed short)2;
   _gwin_terminal_capabilities.logical_columns = _gwin_terminal_capabilities.columns;
 
@@ -100,3 +111,11 @@ signed char gwin_init_terminal_graphics()
   return (signed char)0;
 }
 
+signed char gwin_get_terminal_size(signed short *where_to_store_lines,
+    signed short *where_to_store_columns)
+{
+  *where_to_store_lines = (signed short)LINES;
+  *where_to_store_columns = (signed short)COLS;
+
+  return (signed char)0;
+}
