@@ -1,6 +1,7 @@
 #include <math.h>
 #include "gwin_pixels.h"
 #include "gwin_2D_drawing.h"
+#include "gwin_terminal_capabilities.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
@@ -15,19 +16,38 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
   if (start_x < 0)
   {
-    return (signed char)-2;
+    return (signed char)-1;
   }
 
   if (end_y < 0)
   {
-    return (signed char)-3;
+    return (signed char)-1;
   }
 
   if (end_x < 0)
   {
-    return (signed char)-4;
+    return (signed char)-1;
   }
 
+  if(start_y >= _gwin_terminal_capabilities.logical_rows)
+  {
+    return (signed char)-1;
+  }
+
+  if(start_x >= _gwin_terminal_capabilities.logical_columns)
+  {
+    return (signed char)-1;
+  }
+
+  if(end_y >= _gwin_terminal_capabilities.logical_rows)
+  {
+    return (signed char)-1;
+  }
+
+  if(end_x >= _gwin_terminal_capabilities.logical_columns)
+  {
+    return (signed char)-1;
+  }
 
   if (start_y == end_y)
   {
@@ -82,7 +102,7 @@ signed char gwin_draw_point(signed short y, signed short x, unsigned char R, uns
   }
   if(x < (signed short)0)
   {
-    return (signed short)-2;
+    return (signed short)-1;
   }
 
   set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(y, x, R, G, B);
@@ -97,15 +117,13 @@ signed char gwin_draw_circle_made_of_one_color(signed short center_y, signed sho
   }
   if(center_x < (signed short)0)
   {
-    return (signed char)-2;
+    return (signed char)-1;
   }
   if(pixel_radius < (signed short)0)
   {
-    return (signed char)-3;
+    return (signed char)-1;
   }
 
-  // TODO what happens on overflow in these kinds of operations? Consider that throughout the drawing,
-  // perhaps add a virtual drawing space that gets sync'd to the real one
   for(int rows = (int)(center_y - pixel_radius); rows <= (int)(center_y + pixel_radius); rows++)
   {
     for(int columns = (int)(center_x - pixel_radius); columns <= (int)(center_x + pixel_radius); columns++)

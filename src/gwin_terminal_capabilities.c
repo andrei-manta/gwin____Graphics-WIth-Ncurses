@@ -37,6 +37,8 @@ signed char gwin_init_terminal_graphics()
   if(setlocale_return == (char *)NULL)
   {
     gwin_log_function_error("setlocale()", "returned NULL", "gwin_init_terminal_graphics()");
+    
+    return (signed char)-1;
   }
 
   //upon error in initscr(), ncurses prints to stderr and exits by itself
@@ -44,16 +46,22 @@ signed char gwin_init_terminal_graphics()
   if(cbreak_return != (int)OK)
   {
     gwin_log_function_error("cbreak()", "returned not OK", "gwin_init_terminal_graphics()");
+  
+    return (signed char)-1;
   }
 
   if(noecho_return != (int)OK)
   {
     gwin_log_function_error("noecho()", "returned not OK", "gwin_init_terminal_graphics()");
+  
+    return (signed char)-1;
   }
 
   if(curs_set_return == (int)ERR)
   {
     gwin_log_function_error("curs_set()", "returned ERR", "gwin_init_terminal_graphics()");
+  
+    return (signed char)-1;
   }
 
   if(gwin_init_color_return != (signed char)0)
@@ -77,8 +85,6 @@ signed char gwin_init_terminal_graphics()
 
     return (signed char)-1;
   }
-
-  //TODO find other places where get_terminal_size should be used
 
   _gwin_terminal_capabilities.logical_rows = _gwin_terminal_capabilities.rows * (signed short)2;
   _gwin_terminal_capabilities.logical_columns = _gwin_terminal_capabilities.columns;
@@ -114,6 +120,15 @@ signed char gwin_init_terminal_graphics()
 signed char gwin_get_terminal_size(signed short *where_to_store_lines,
     signed short *where_to_store_columns)
 {
+  if(where_to_store_lines == (signed short*)NULL)
+  {
+    return (signed char)-1;
+  }
+  if(where_to_store_columns == (signed short*)NULL)
+  {
+    return (signed char)-1;
+  }
+
   *where_to_store_lines = (signed short)LINES;
   *where_to_store_columns = (signed short)COLS;
 

@@ -89,10 +89,11 @@ signed char gwin_print_error_log()
   {
     char buf[64];
     memset(buf, (char)0, (size_t)64);
-    snprintf(buf, (size_t)64, "ERROR LOG ENTRY(what function failed, failure reason):");
+    snprintf(buf, (size_t)64, "ERROR LOG ENTRY(what function failed, failure reason, what function caught it):");
     gwin_log(buf);
     gwin_log(current_entry->what_function_failed);
     gwin_log(current_entry->failure_reason);
+    gwin_log(current_entry->function_that_detected_the_failure);
     current_entry = current_entry->next_entry;
   }
 
