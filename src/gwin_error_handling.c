@@ -13,7 +13,6 @@ signed char gwin_init_error_logging()
 {
   _gwin_error_log.first_error = (gwin_error_log_entry *)NULL;
   _gwin_error_log.last_error = (gwin_error_log_entry *)NULL;
-
   return (signed char)0;
 }
 
@@ -27,7 +26,6 @@ signed char gwin_log_function_error(char *what_function_failed, char *failure_re
   {
     return (signed char)-1;
   }
-
   if(function_that_detected_the_failure == (char*)NULL)
   {
     return (signed char)-1;
@@ -87,9 +85,9 @@ signed char gwin_print_error_log()
 
   while(current_entry != (gwin_error_log_entry *)NULL)
   {
-    char buf[64];
-    memset(buf, (char)0, (size_t)64);
-    snprintf(buf, (size_t)64, "ERROR LOG ENTRY(what function failed, failure reason, what function caught it):");
+    char buf[128];
+    memset(buf, (char)0, (size_t)128);
+    snprintf(buf, (size_t)128, "ERROR LOG ENTRY(what function failed, failure reason, what function caught it):");
     gwin_log(buf);
     gwin_log(current_entry->what_function_failed);
     gwin_log(current_entry->failure_reason);

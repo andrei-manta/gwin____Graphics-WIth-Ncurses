@@ -16,7 +16,7 @@ signed int main()
   if(gwin_init_terminal_graphics_return != (signed char)0)
   {
     printf("Error number:%d in gwin initialisation. Aborting.\n", (signed int)gwin_init_terminal_graphics_return);
-
+    
     return (signed int)-1;
   }
 

@@ -74,9 +74,10 @@ signed char gwin_init_terminal_graphics()
     return (signed char)-1;
   }
 
-  signed char gwin_get_terminal_size_return = gwin_get_terminal_size(&_gwin_terminal_capabilities.rows, &_gwin_terminal_capabilities.columns);
-  
-  if(gwin_get_terminal_size != (signed char)0)
+  signed char gwin_get_terminal_size_return = gwin_get_terminal_size(&(_gwin_terminal_capabilities.rows), 
+                                                                     &(_gwin_terminal_capabilities.columns));
+
+  if(gwin_get_terminal_size_return != (signed char)0)
   {
     char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
     snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", gwin_get_terminal_size_return);
