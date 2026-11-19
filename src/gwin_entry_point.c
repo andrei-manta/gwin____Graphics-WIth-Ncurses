@@ -17,11 +17,13 @@ signed int main()
   {
     printf("Error number:%d in gwin initialisation. Aborting.\n", (signed int)gwin_init_terminal_graphics_return);
     
+    gwin_print_error_log();
+
     return (signed int)-1;
   }
 
   char debug_buf[64];
-  snprintf(debug_buf, 64, "Starting gwin entry point");
+  snprintf(debug_buf, 64, "Started gwin entry point...");
   gwin_log(debug_buf);
 
   getch();

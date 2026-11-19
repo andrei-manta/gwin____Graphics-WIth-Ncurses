@@ -25,7 +25,7 @@ signed char gwin_log(char *message)
   }
 
   fputs(message, f);
-  fprintf(f, " >>> logged at UTC time: %lld, in pretty format:%04d-%02d-%02d-%02d-%02d-%02d\n\n", current_UTC_time,
+  fprintf(f, " >>> logged by the logger at UTC time: %lld, in pretty format:%04d-%02d-%02d-%02d-%02d-%02d\n\n", current_UTC_time,
           current_UTC_time_in_pretty_format.tm_year + (int)1900, current_UTC_time_in_pretty_format.tm_mon + (int)1, 
           current_UTC_time_in_pretty_format.tm_mday, current_UTC_time_in_pretty_format.tm_hour,
           current_UTC_time_in_pretty_format.tm_min, current_UTC_time_in_pretty_format.tm_sec);

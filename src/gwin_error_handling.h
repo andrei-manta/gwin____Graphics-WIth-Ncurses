@@ -8,6 +8,7 @@ struct gwin_error_log_entry{
   char *what_function_failed;
   char *failure_reason;
   char *function_that_detected_the_failure;
+  char *what_time_the_error_was_thrown_at;
 };
 
 typedef struct{
