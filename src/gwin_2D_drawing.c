@@ -1,5 +1,8 @@
 #include <math.h>
+#include <stdio.h>
+#include "gwin_constants.h"
 #include "gwin_pixels.h"
+#include "gwin_error_handling.h"
 #include "gwin_2D_drawing.h"
 #include "gwin_terminal_capabilities.h"
 #define _XOPEN_SOURCE_EXTENDED
@@ -29,32 +32,26 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
     return (signed char)-1;
   }
 
-  if(start_y >= _gwin_terminal_capabilities.logical_rows)
-  {
-    return (signed char)-1;
-  }
-
-  if(start_x >= _gwin_terminal_capabilities.logical_columns)
-  {
-    return (signed char)-1;
-  }
-
-  if(end_y >= _gwin_terminal_capabilities.logical_rows)
-  {
-    return (signed char)-1;
-  }
-
-  if(end_x >= _gwin_terminal_capabilities.logical_columns)
-  {
-    return (signed char)-1;
-  }
-
   if (start_y == end_y)
   {
     
     if (start_x == end_x)
     {
+      signed char set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return =
       set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y, start_x, R, G, B);
+      
+      if(set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return != (signed char)0)
+      {
+        char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
+        snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", 
+                 (signed int)set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return);
+        failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
+        gwin_log_function_error("gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh()",
+                                failure_reason, "gwin_draw_line_made_of_one_color()");
+
+        return (signed char)-1;
+      }
+
       return (signed char)0;
     }
 
