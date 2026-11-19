@@ -133,5 +133,5 @@ signed char gwin_get_terminal_size(signed short *where_to_store_lines,
   *where_to_store_lines = (signed short)LINES;
   *where_to_store_columns = (signed short)COLS;
 
-  return (signed char)-1;
+  return (signed char)0;
 }

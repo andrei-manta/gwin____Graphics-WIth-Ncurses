@@ -43,11 +43,13 @@ signed char gwin_log_function_error(char *what_function_failed, char *failure_re
   {
     _gwin_error_log.first_error = new_error_entry;
     _gwin_error_log.last_error = new_error_entry;
+    _gwin_error_log.last_error->next_entry = (gwin_error_log_entry *)NULL;
   }
   else
   {
     _gwin_error_log.last_error->next_entry = new_error_entry;
     _gwin_error_log.last_error = new_error_entry;
+    _gwin_error_log.last_error->next_entry = (gwin_error_log_entry *)NULL;
   }
 
   _gwin_error_log.last_error->what_function_failed = (char *)malloc((size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES * sizeof(char));
@@ -114,6 +116,7 @@ signed char gwin_print_error_log()
     gwin_log(current_entry->what_function_failed);
     gwin_log(current_entry->failure_reason);
     gwin_log(current_entry->function_that_detected_the_failure);
+    gwin_log(current_entry->what_time_the_error_was_thrown_at);
     current_entry = current_entry->next_entry;
   }
 

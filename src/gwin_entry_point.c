@@ -17,8 +17,6 @@ signed int main()
   {
     printf("Error number:%d in gwin initialisation. Aborting.\n", (signed int)gwin_init_terminal_graphics_return);
     
-    gwin_print_error_log();
-
     return (signed int)-1;
   }
 
