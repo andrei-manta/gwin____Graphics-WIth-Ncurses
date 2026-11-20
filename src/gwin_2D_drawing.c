@@ -126,7 +126,7 @@ signed char gwin_draw_circle_made_of_one_color(signed short center_y, signed sho
     for(int columns = (int)(center_x - pixel_radius); columns <= (int)(center_x + pixel_radius); columns++)
     {
       float distance_to_circle_center_for_this_pixel = 0.0;
-      compute_as_float_distance_between_two_logical_pixels(center_y, center_x, rows, columns, &distance_to_circle_center_for_this_pixel);
+      gwin_compute_as_float_distance_between_two_logical_pixels(center_y, center_x, rows, columns, &distance_to_circle_center_for_this_pixel);
       if(distance_to_circle_center_for_this_pixel <= (float)pixel_radius)
       {
         gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(rows, columns, R, G, B);

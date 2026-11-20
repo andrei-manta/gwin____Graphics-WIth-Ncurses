@@ -7,10 +7,10 @@ typedef struct{
   unsigned char R;
   unsigned char G;
   unsigned char B;
-}virtual_pixel;
+}gwin_virtual_pixel;
 
 typedef struct{
-   virtual_pixel pixels[(signed short)MAXIMUM_SUPPORTED_VIRTUAL_SCREEN_ROWS][(signed short)MAXIMUM_SUPPORTED_VIRTUAL_SCREEN_COLUMNS];
-}virtual_screen;
+   gwin_virtual_pixel pixels[(signed short)MAXIMUM_SUPPORTED_VIRTUAL_SCREEN_ROWS][(signed short)MAXIMUM_SUPPORTED_VIRTUAL_SCREEN_COLUMNS];
+}gwin_virtual_screen;
 
 #endif
