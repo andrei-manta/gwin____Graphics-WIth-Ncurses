@@ -18,7 +18,7 @@ typedef struct
   cchar_t physical_cell_contents;
 }gwin_2pixel_cell;
 
-signed char set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(
+signed char gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(
     signed short y, signed short x, unsigned char R, unsigned char G, unsigned char B);
 
 signed char compute_as_float_distance_between_two_logical_pixels(signed short first_pixel_y, signed short first_pixel_x,

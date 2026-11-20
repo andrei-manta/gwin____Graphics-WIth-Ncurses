@@ -37,14 +37,14 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
     
     if (start_x == end_x)
     {
-      signed char set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return =
-      set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y, start_x, R, G, B);
+      signed char gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return =
+      gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y, start_x, R, G, B);
       
-      if(set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return != (signed char)0)
+      if(gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return != (signed char)0)
       {
         char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
         snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", 
-                 (signed int)set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return);
+                 (signed int)gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return);
         failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
         gwin_log_function_error("gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh()",
                                 failure_reason, "gwin_draw_line_made_of_one_color()");
@@ -57,7 +57,7 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
     for(int i = 0; i <= (end_x > start_x ? end_x - start_x : start_x - end_x); i++)
     {
-      set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y, start_x + i * (end_x > start_x ? (int)1 : (int)-1), R, G, B);
+      gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y, start_x + i * (end_x > start_x ? (int)1 : (int)-1), R, G, B);
     }
 
     return (signed char)0;
@@ -70,7 +70,7 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
     for(int i = 0; i <= (end_y > start_y ? end_y - start_y : start_y - end_y); i++)
     {
-      set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y + i * (end_y > start_y ? (int)1 : (int)-1), start_x, R, G, B);
+      gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y + i * (end_y > start_y ? (int)1 : (int)-1), start_x, R, G, B);
     }
 
     return (signed char)0;
@@ -83,7 +83,7 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
   for(float i = 0.0; i < length_of_the_requested_line; i += 1.0)
   {
-    set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y + (int)roundf(y_slope_component * i), 
+    gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(start_y + (int)roundf(y_slope_component * i), 
         start_x + (int)roundf(x_slope_component * i), R, G, B);
   }
 
@@ -102,7 +102,7 @@ signed char gwin_draw_point(signed short y, signed short x, unsigned char R, uns
     return (signed short)-1;
   }
 
-  set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(y, x, R, G, B);
+  gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(y, x, R, G, B);
 }
 
 signed char gwin_draw_circle_made_of_one_color(signed short center_y, signed short center_x, 
@@ -129,7 +129,7 @@ signed char gwin_draw_circle_made_of_one_color(signed short center_y, signed sho
       compute_as_float_distance_between_two_logical_pixels(center_y, center_x, rows, columns, &distance_to_circle_center_for_this_pixel);
       if(distance_to_circle_center_for_this_pixel <= (float)pixel_radius)
       {
-        set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(rows, columns, R, G, B);
+        gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(rows, columns, R, G, B);
       }
     }
   }

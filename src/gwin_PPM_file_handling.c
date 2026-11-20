@@ -81,7 +81,7 @@ signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_fo
   while(pixels_read < width * height)
   {
     fread(rgb_buffer, 3, 1, f);
-    set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(pixels_read / width, pixels_read % width, 
+    gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(pixels_read / width, pixels_read % width, 
         rgb_buffer[0], rgb_buffer[1], rgb_buffer[2]);
     pixels_read++;
   }
