@@ -14,7 +14,12 @@ signed char gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(
   if(x > (signed short)_gwin_terminal_capabilities.logical_columns) return (signed char)-1;
 
   unsigned char color_number;
-  gwin_RGB_to_ncurses_solid_color_with_alpha(&color_number, R, G, B);
+  signed char gwin_RGB_to_ncurses_solid_color_with_alpha_return = gwin_RGB_to_ncurses_solid_color_with_alpha(&color_number, R, G, B);
+
+  if(gwin_RGB_to_ncurses_solid_color_with_alpha_return != (signed char)0)
+  {
+    //TODO handle the error
+  }
 
   if(y % 2 == 0)
   {

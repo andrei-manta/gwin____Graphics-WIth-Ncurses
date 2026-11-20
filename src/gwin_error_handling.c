@@ -17,7 +17,8 @@ signed char gwin_init_error_logging()
   return (signed char)0;
 }
 
-signed char gwin_log_function_error(char *what_function_failed, char *failure_reason, char *function_that_detected_the_failure)
+signed char gwin_log_function_error(char *what_function_failed, char *failure_reason,
+                                    signed int failure_code, char *function_that_detected_the_failure)
 {
   if(what_function_failed == (char *)NULL)
   {
@@ -100,6 +101,8 @@ signed char gwin_log_function_error(char *what_function_failed, char *failure_re
           current_UTC_time_in_pretty_format.tm_mday, current_UTC_time_in_pretty_format.tm_hour,
           current_UTC_time_in_pretty_format.tm_min, current_UTC_time_in_pretty_format.tm_sec);
 
+  _gwin_error_log.last_error->failure_code = failure_code;
+
   return (signed char)0;
 }
 
@@ -111,10 +114,14 @@ signed char gwin_print_error_log()
   {
     char buf[128];
     memset(buf, (char)0, (size_t)128);
-    snprintf(buf, (size_t)128, "ERROR LOG ENTRY(what function failed, failure reason, what function caught it):");
+    snprintf(buf, (size_t)128, "ERROR LOG ENTRY(what function failed, failure reason, failure code, "
+             "what function caught it, when was it caught):");
     gwin_log(buf);
     gwin_log(current_entry->what_function_failed);
     gwin_log(current_entry->failure_reason);
+    char number_buf[128];
+    memset(number_buf, (char)0, (size_t)128);
+    snprintf(number_buf, (size_t)128, "%d", current_entry->failure_code);
     gwin_log(current_entry->function_that_detected_the_failure);
     gwin_log(current_entry->what_time_the_error_was_thrown_at);
     current_entry = current_entry->next_entry;
