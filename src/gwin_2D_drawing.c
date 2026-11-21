@@ -42,12 +42,9 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
       
       if(gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return != (signed char)0)
       {
-        char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
-        snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", 
-                 (signed int)gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return);
-        failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
-        gwin_log_function_error("gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh()",
-                                failure_reason, "gwin_draw_line_made_of_one_color()");
+        gwin_log_function_error("gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh()", "returned error",
+                                gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh_return,
+                                "gwin_draw_line_made_of_one_color()");
 
         return (signed char)-1;
       }

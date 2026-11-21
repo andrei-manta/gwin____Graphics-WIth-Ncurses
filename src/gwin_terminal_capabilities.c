@@ -36,7 +36,7 @@ signed char gwin_init_terminal_graphics()
 
   if(setlocale_return == (char *)NULL)
   {
-    gwin_log_function_error("setlocale()", "returned NULL", "gwin_init_terminal_graphics()");
+    gwin_log_function_error("setlocale()", "returned error", (signed int)NULL, "gwin_init_terminal_graphics()");
     
     return (signed char)-1;
   }
@@ -45,31 +45,28 @@ signed char gwin_init_terminal_graphics()
 
   if(cbreak_return != (int)OK)
   {
-    gwin_log_function_error("cbreak()", "returned not OK", "gwin_init_terminal_graphics()");
+    gwin_log_function_error("cbreak()", "returned not OK", ERR, "gwin_init_terminal_graphics()");
   
     return (signed char)-1;
   }
 
   if(noecho_return != (int)OK)
   {
-    gwin_log_function_error("noecho()", "returned not OK", "gwin_init_terminal_graphics()");
+    gwin_log_function_error("noecho()", "returned not OK", ERR, "gwin_init_terminal_graphics()");
   
     return (signed char)-1;
   }
 
   if(curs_set_return == (int)ERR)
   {
-    gwin_log_function_error("curs_set()", "returned ERR", "gwin_init_terminal_graphics()");
+    gwin_log_function_error("curs_set()", "returned ERR", ERR, "gwin_init_terminal_graphics()");
   
     return (signed char)-1;
   }
 
   if(gwin_init_color_return != (signed char)0)
   {
-    char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
-    snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", gwin_init_color_return);
-    failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
-    gwin_log_function_error("gwin_init_color()", failure_reason, "gwin_init_terminal_graphics()");
+    gwin_log_function_error("gwin_init_color()", "returned with error", (signed char)gwin_init_color_return, "gwin_init_terminal_graphics()");
 
     return (signed char)-1;
   }
@@ -79,10 +76,8 @@ signed char gwin_init_terminal_graphics()
 
   if(gwin_get_terminal_size_return != (signed char)0)
   {
-    char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
-    snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", gwin_get_terminal_size_return);
-    failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
-    gwin_log_function_error("gwin_get_terminal_size()", failure_reason, "gwin_init_terminal_graphics()");
+    gwin_log_function_error("gwin_get_terminal_size()", "returned with error", (signed char)gwin_get_terminal_size_return,
+                            "gwin_init_terminal_graphics()");
 
     return (signed char)-1;
   }
@@ -107,10 +102,7 @@ signed char gwin_init_terminal_graphics()
         (signed int)setcchar(&_gwin_terminal_capabilities.physical_pixel_grid[rows][columns].physical_cell_contents, 
                              L"", A_NORMAL, 0, NULL)) != OK)
       {
-        char failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES];
-        snprintf(failure_reason, (size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES, "returned code:%d", setcchar_return);
-        failure_reason[(size_t)SIZE_OF_CHAR_BUFFER_FOR_ERROR_MESSAGES - (size_t)1] = (char)'\0';
-        gwin_log_function_error("setcchar()", failure_reason, "gwin_init_terminal_graphics()");
+        gwin_log_function_error("setcchar()", "returned with error", setcchar_return, "gwin_init_terminal_graphics()");
       }
     }
   }
