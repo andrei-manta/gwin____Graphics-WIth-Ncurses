@@ -5,6 +5,7 @@
 #include "gwin_logging.h"
 #include "gwin_error_handling.h"
 #include "gwin_2D_drawing.h"
+#include "gwin_PPM_file_handling.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
@@ -23,6 +24,8 @@ signed int main()
   char debug_buf[64];
   snprintf(debug_buf, 64, "Started gwin entry point...");
   gwin_log(debug_buf);
+
+  gwin_display_P6_PPM_file_in_terminal("./a.ppm");
 
   getch();
 
