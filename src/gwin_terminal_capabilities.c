@@ -6,6 +6,7 @@
 #include "gwin_colors.h"
 #include "gwin_logging.h"
 #include "gwin_error_handling.h"
+#include "gwin_virtual_screens.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
@@ -21,6 +22,9 @@ signed char gwin_init_terminal_graphics()
   signed char gwin_init_color_return = gwin_init_color();
   signed char gwin_init_logging_return = gwin_init_logging();
   signed char gwin_init_error_logging_return = gwin_init_error_logging();
+  signed char gwin_init_virtual_screens_return = gwin_init_virtual_screens();
+  signed char gwin_get_terminal_size_return = gwin_get_terminal_size(&(_gwin_terminal_capabilities.rows), 
+                                                                     &(_gwin_terminal_capabilities.columns));
 
   if(gwin_init_logging_return != (signed char)0)
   {
@@ -71,15 +75,18 @@ signed char gwin_init_terminal_graphics()
     return (signed char)-1;
   }
 
-  signed char gwin_get_terminal_size_return = gwin_get_terminal_size(&(_gwin_terminal_capabilities.rows), 
-                                                                     &(_gwin_terminal_capabilities.columns));
-
   if(gwin_get_terminal_size_return != (signed char)0)
   {
     gwin_log_function_error("gwin_get_terminal_size()", "returned with error", (signed char)gwin_get_terminal_size_return,
                             "gwin_init_terminal_graphics()");
 
     return (signed char)-1;
+  }
+
+  if(gwin_init_virtual_screens_return != (signed char)0)
+  {
+    gwin_log_function_error("gwin_init_virtual_screens()", "returned with error", 
+                            gwin_init_virtual_screens_return, "gwin_init_terminal_graphics()");
   }
 
   _gwin_terminal_capabilities.logical_rows = _gwin_terminal_capabilities.rows * (signed short)2;
