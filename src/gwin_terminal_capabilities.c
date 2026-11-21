@@ -87,6 +87,8 @@ signed char gwin_init_terminal_graphics()
   {
     gwin_log_function_error("gwin_init_virtual_screens()", "returned with error", 
                             gwin_init_virtual_screens_return, "gwin_init_terminal_graphics()");
+  
+    return (signed char)-1;
   }
 
   _gwin_terminal_capabilities.logical_rows = _gwin_terminal_capabilities.rows * (signed short)2;
@@ -125,6 +127,15 @@ signed char gwin_get_terminal_size(signed short *where_to_store_lines,
     return (signed char)-1;
   }
   if(where_to_store_columns == (signed short*)NULL)
+  {
+    return (signed char)-1;
+  }
+
+  if(LINES <= (int)0)
+  {
+    return (signed char)-1;
+  }
+  if(COLS <= (int)0)
   {
     return (signed char)-1;
   }
