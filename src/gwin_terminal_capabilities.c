@@ -94,28 +94,6 @@ signed char gwin_init_terminal_graphics()
   _gwin_terminal_capabilities.logical_rows = _gwin_terminal_capabilities.rows * (signed short)2;
   _gwin_terminal_capabilities.logical_columns = _gwin_terminal_capabilities.columns;
 
-  for(int rows = 0; rows < _gwin_terminal_capabilities.rows; rows++)
-  {
-    for(int columns = 0; columns < _gwin_terminal_capabilities.columns; columns++)
-    {
-      _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].upper_pixel.y = rows * 2;
-      _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].upper_pixel.x = columns;
-      _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].upper_pixel.rgb_color = START_OF_XTERM256_COLOR_CUBE_INCLUSIVE;
-
-      _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].lower_pixel.y = rows * 2 + 1;
-      _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].lower_pixel.x = columns;
-      _gwin_terminal_capabilities.physical_pixel_grid[rows][columns].lower_pixel.rgb_color = START_OF_XTERM256_COLOR_CUBE_INCLUSIVE;
-    
-      signed int setcchar_return;
-      if((setcchar_return = 
-        (signed int)setcchar(&_gwin_terminal_capabilities.physical_pixel_grid[rows][columns].physical_cell_contents, 
-                             L"", A_NORMAL, 0, NULL)) != OK)
-      {
-        gwin_log_function_error("setcchar()", "returned with error", setcchar_return, "gwin_init_terminal_graphics()");
-      }
-    }
-  }
-
   return (signed char)0;
 }
 

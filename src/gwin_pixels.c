@@ -5,44 +5,91 @@
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
-signed char gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(
-    signed short y, signed short x, unsigned char R, unsigned char G, unsigned char B)
+signed char gwin_write_virtual_screen_to_physical_screen(gwin_virtual_screen *which_virtual_screen)
 {
-  if(y < (signed short)0) return (signed char)-1;
-  if(y > (signed short)_gwin_terminal_capabilities.logical_rows) return (signed char)-1;
-  if(x < (signed short)0) return (signed char)-1;
-  if(x > (signed short)_gwin_terminal_capabilities.logical_columns) return (signed char)-1;
-
-  unsigned char color_number;
-  signed char gwin_RGB_to_ncurses_solid_color_with_alpha_return = gwin_RGB_to_ncurses_solid_color_with_alpha(&color_number, R, G, B);
-
-  if(gwin_RGB_to_ncurses_solid_color_with_alpha_return != (signed char)0)
+  if(which_virtual_screen == (gwin_virtual_screen *)NULL)
   {
-    //TODO handle the error
+    gwin_log_function_error("this function itself", "received NULL pointer as parameter", -1,
+                            "gwin_write_virtual_screen_to_physical_screen()");
+    return (signed char)-1;
   }
 
-  if(y % 2 == 0)
+  signed short virtual_rows = _gwin_virtual_screens_table.virtual_screen_rows;
+  signed short virtual_columns = _gwin_virtual_screens_table.virtual_screen_columns;
+
+  for(signed short cell_y = (signed short)0; (int)cell_y * (int)2 < (int)virtual_rows; cell_y++)
   {
-    _gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].upper_pixel.rgb_color = color_number;
-    int cell_color_pair = (int)color_number * (int)256 + 
-      (int)(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].lower_pixel.rgb_color);
-    setcchar(&(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents), L"\u2580", A_NORMAL, 
-      0, &cell_color_pair);
-    mvadd_wch((int)(y / (signed short)2), (int)x, 
-        &(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents));
-  }
-  if(y % 2 == 1)
-  {
-    _gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].lower_pixel.rgb_color = color_number;
-    int cell_color_pair = (int)(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].upper_pixel.rgb_color) * 
-      (int)256 + (int)color_number;
-    setcchar(&(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents), L"\u2580", A_NORMAL,
-        0, &cell_color_pair);
-    mvadd_wch((int)(y / (signed short)2), (int)x,
-        &(_gwin_terminal_capabilities.physical_pixel_grid[y / (signed short)2][x].physical_cell_contents));
+    signed short upper_y = (signed short)((int)cell_y * (int)2);
+    signed short lower_y = (signed short)((int)upper_y + (int)1);
+
+    for(signed short x = (signed short)0; x < virtual_columns; x++)
+    {
+      gwin_virtual_pixel *upper_pixel = &which_virtual_screen->pixels[(size_t)upper_y * (size_t)virtual_columns + (size_t)x];
+
+      unsigned char upper_color_number;
+      unsigned char lower_color_number;
+
+      signed char upper_conversion_return = gwin_RGB_to_ncurses_solid_color_with_alpha(&upper_color_number,
+                                                                                       upper_pixel->R, upper_pixel->G,
+                                                                                       upper_pixel->B);
+
+      if(upper_conversion_return != (signed char)0)
+      {
+        gwin_log_function_error("gwin_RGB_to_ncurses_solid_color_with_alpha()", "returned with error",
+                                upper_conversion_return, "gwin_write_virtual_screen_to_physical_screen()");
+        return (signed char)-2;
+      }
+
+      signed char lower_conversion_return;
+
+      if(lower_y < virtual_rows)
+      {
+        gwin_virtual_pixel *lower_pixel = &which_virtual_screen->pixels[(size_t)lower_y * (size_t)virtual_columns + (size_t)x];
+
+        lower_conversion_return = gwin_RGB_to_ncurses_solid_color_with_alpha(&lower_color_number,
+                                                                             lower_pixel->R, lower_pixel->G,
+                                                                             lower_pixel->B);
+      }
+      else
+      {
+        // odd number of pixel rows: the missing lower pixel is black
+        lower_conversion_return = gwin_RGB_to_ncurses_solid_color_with_alpha(&lower_color_number,
+                                                                             (unsigned char)0, (unsigned char)0,
+                                                                             (unsigned char)0);
+      }
+
+      if(lower_conversion_return != (signed char)0)
+      {
+        gwin_log_function_error("gwin_RGB_to_ncurses_solid_color_with_alpha()", "returned with error",
+                                lower_conversion_return, "gwin_write_virtual_screen_to_physical_screen()");
+        return (signed char)-3;
+      }
+
+      int cell_color_pair = (int)upper_color_number * (int)256 + (int)lower_color_number;
+
+      cchar_t physical_cell_contents;
+
+      if(setcchar(&physical_cell_contents, L"\u2580", A_NORMAL, 0, &cell_color_pair) == ERR)
+      {
+        gwin_log_function_error("setcchar()", "returned ERR", -1, "gwin_write_virtual_screen_to_physical_screen()");
+        return (signed char)-4;
+      }
+
+      if(mvadd_wch((int)cell_y, (int)x, &physical_cell_contents) == ERR)
+      {
+        gwin_log_function_error("mvadd_wch()", "returned ERR", -1, "gwin_write_virtual_screen_to_physical_screen()");
+        return (signed char)-5;
+      }
+    }
   }
 
-  refresh();
+  if(refresh() == ERR)
+  {
+    gwin_log_function_error("refresh()", "returned ERR", -1, "gwin_write_virtual_screen_to_physical_screen()");
+    return (signed char)-6;
+  }
+
+  return (signed char)0;
 }
 
 signed char gwin_compute_as_float_distance_between_two_logical_pixels(signed short first_pixel_y, signed short first_pixel_x,
