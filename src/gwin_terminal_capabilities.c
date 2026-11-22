@@ -145,3 +145,11 @@ signed char gwin_get_terminal_size(signed short *where_to_store_lines,
 
   return (signed char)0;
 }
+
+signed char gwin_end_terminal_graphics()
+{
+  endwin();
+
+  gwin_print_error_log();
+}
+

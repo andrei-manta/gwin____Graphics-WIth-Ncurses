@@ -74,3 +74,40 @@ signed char gwin_request_virtual_screen(gwin_virtual_screen **where_to_store_vir
 
   return (signed char)0;
 }
+
+signed char gwin_delete_virtual_screen(gwin_virtual_screen *screen)
+{
+  if(screen == NULL)
+  {
+    gwin_log_function_error("this function itself", "received NULL pointer as parameter", -1, "gwin_delete_virtual_screen()");
+    return (signed char)-1;
+  }
+
+  gwin_virtual_screens_table_node *prev = NULL;
+  gwin_virtual_screens_table_node *node = _gwin_virtual_screens_table.first;
+
+  while(node != NULL && &node->current_screen != screen)
+  {
+    prev = node;
+    node = node->next_screen;
+  }
+
+  if(node == NULL)
+  {
+    gwin_log_function_error("this function itself", "virtual screen not found in table", -1, "gwin_delete_virtual_screen()");
+    return (signed char)-2;
+  }
+
+  if(prev == NULL)
+    _gwin_virtual_screens_table.first = node->next_screen;
+  else
+    prev->next_screen = node->next_screen;
+
+  if(node == _gwin_virtual_screens_table.last)
+    _gwin_virtual_screens_table.last = prev;   // NULL if list is now empty
+
+  free(node->current_screen.pixels);
+  free(node);
+
+  return (signed char)0;
+}

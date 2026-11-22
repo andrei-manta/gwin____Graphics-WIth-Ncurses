@@ -29,9 +29,7 @@ signed int main()
 
   getch();
 
-  endwin();
-
-  gwin_print_error_log();
+  gwin_end_terminal_graphics();
 
   return (signed int)0;
 }

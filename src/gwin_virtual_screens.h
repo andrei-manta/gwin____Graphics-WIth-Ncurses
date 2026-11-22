@@ -2,8 +2,6 @@
 #define GWIN_VIRTUAL_SCREENS_H
 
 typedef struct{
-  signed short x;
-  signed short y;
   unsigned char R;
   unsigned char G;
   unsigned char B;
@@ -31,5 +29,7 @@ extern gwin_virtual_screens_table _gwin_virtual_screens_table;
 
 signed char gwin_init_virtual_screens();
 signed char gwin_request_virtual_screen(gwin_virtual_screen **where_to_store_virtual_screen_address);
+signed char gwin_delete_virtual_screen(gwin_virtual_screen *screen);
+
 
 #endif
