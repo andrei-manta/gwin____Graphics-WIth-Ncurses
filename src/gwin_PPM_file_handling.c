@@ -1,6 +1,8 @@
 #include <math.h>
 #include "gwin_pixels.h"
 #include "gwin_PPM_file_handling.h"
+#include "gwin_virtual_screens.h"
+#include "gwin_logging.h"
 #include <string.h>
 #include <stdlib.h>
 #define _XOPEN_SOURCE_EXTENDED
@@ -75,17 +77,61 @@ signed char gwin_display_P6_PPM_file_in_terminal(char *file_name_from_current_fo
     }
   }
 
+  gwin_virtual_screen *virtual_screen;
+  signed char gwin_request_virtual_screen_return = gwin_request_virtual_screen(&virtual_screen);
+
+  if(gwin_request_virtual_screen_return != (signed char)0)
+  {
+    gwin_log_function_error("gwin_request_virtual_screen()", "returned with error", gwin_request_virtual_screen_return,
+                            "gwin_display_P6_PPM_file_in_terminal()");
+    fclose(f);
+    return (signed char)-1;
+  }
+
   unsigned char rgb_buffer[3];
   int pixels_read = 0;
 
   while(pixels_read < width * height)
   {
     fread(rgb_buffer, 3, 1, f);
-    gwin_set_logical_pixel_yx_to_rgb_and_set_physical_pixel_and_refresh(pixels_read / width, pixels_read % width, 
+    signed char gwin_write_pixel_to_virtual_screen_return = gwin_write_pixel_to_virtual_screen(virtual_screen,
+        (signed short)(pixels_read / width), (signed short)(pixels_read % width),
         rgb_buffer[0], rgb_buffer[1], rgb_buffer[2]);
+
+    if(gwin_write_pixel_to_virtual_screen_return != (signed char)0)
+    {
+      gwin_log_function_error("gwin_write_pixel_to_virtual_screen()", "returned with error",
+                              gwin_write_pixel_to_virtual_screen_return, "gwin_display_P6_PPM_file_in_terminal()");
+      gwin_delete_virtual_screen(virtual_screen);
+      fclose(f);
+      return (signed char)-2;
+    }
+
     pixels_read++;
   }
 
-  fclose(f);
-}
+  signed char gwin_write_virtual_screen_to_physical_screen_return = gwin_write_virtual_screen_to_physical_screen(virtual_screen);
 
+  if(gwin_write_virtual_screen_to_physical_screen_return != (signed char)0)
+  {
+    gwin_log_function_error("gwin_write_virtual_screen_to_physical_screen()", "returned with error",
+                            gwin_write_virtual_screen_to_physical_screen_return, "gwin_display_P6_PPM_file_in_terminal()");
+    gwin_delete_virtual_screen(virtual_screen);
+    fclose(f);
+    return (signed char)-3;
+  }
+
+  signed char gwin_delete_virtual_screen_return = gwin_delete_virtual_screen(virtual_screen);
+
+  if(gwin_delete_virtual_screen_return != (signed char)0)
+  {
+    gwin_log_function_error("gwin_delete_virtual_screen()", "returned with error", gwin_delete_virtual_screen_return,
+                            "gwin_display_P6_PPM_file_in_terminal()");
+    fclose(f);
+    return (signed char)-4;
+  }
+
+  fclose(f);
+
+  return (signed char)0;
+}
