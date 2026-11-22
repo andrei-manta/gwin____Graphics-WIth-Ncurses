@@ -12,17 +12,9 @@ gwin_virtual_screens_table _gwin_virtual_screens_table;
 
 signed char gwin_init_virtual_screens()
 {
-  signed char gwin_get_terminal_size_return = gwin_get_terminal_size(&_gwin_virtual_screens_table.virtual_screen_lines,
-                                                                     &_gwin_virtual_screens_table.virtual_screen_columns);
+  _gwin_virtual_screens_table.virtual_screen_rows = _gwin_terminal_capabilities.logical_rows;
+  _gwin_virtual_screens_table.virtual_screen_columns = _gwin_terminal_capabilities.logical_columns;
   
-  if(gwin_get_terminal_size_return != (signed char)0)
-  {
-    gwin_log_function_error("gwin_get_terminal_size()", "returned with error", gwin_get_terminal_size_return, 
-                            "gwin_init_virtual_screens()");
-
-    return (signed char)-1;
-  }
-
   _gwin_virtual_screens_table.first = (gwin_virtual_screens_table_node *)NULL;
   _gwin_virtual_screens_table.last = (gwin_virtual_screens_table_node *)NULL;
 
@@ -47,7 +39,7 @@ signed char gwin_request_virtual_screen(gwin_virtual_screen **where_to_store_vir
   }
 
   new_virtual_screen->current_screen.pixels = (gwin_virtual_pixel *)calloc(
-    (size_t)_gwin_virtual_screens_table.virtual_screen_lines * (size_t)_gwin_virtual_screens_table.virtual_screen_columns,
+    (size_t)_gwin_virtual_screens_table.virtual_screen_rows * (size_t)_gwin_virtual_screens_table.virtual_screen_columns,
     sizeof(gwin_virtual_pixel));
 
   if(new_virtual_screen->current_screen.pixels == (gwin_virtual_pixel *)NULL)
@@ -108,6 +100,50 @@ signed char gwin_delete_virtual_screen(gwin_virtual_screen *screen)
 
   free(node->current_screen.pixels);
   free(node);
+
+  return (signed char)0;
+}
+
+signed char gwin_write_pixel_to_virtual_screen(gwin_virtual_screen *which_virtual_screen, signed short y, signed short x,
+                                               unsigned char R, unsigned char G, unsigned char B)
+{
+  if(which_virtual_screen == (gwin_virtual_screen *)NULL)
+  {
+    gwin_log_function_error("this function itself", "received NULL pointer as parameter", -1,
+                            "gwin_write_pixel_to_virtual_screen()");
+    return (signed char)-1;
+  }
+
+  if(y < (signed short)0)
+  {
+    gwin_log_function_error("this function itself", "y is negative", -2, "gwin_write_pixel_to_virtual_screen()");
+    return (signed char)-2;
+  }
+
+  if(y >= _gwin_virtual_screens_table.virtual_screen_rows)
+  {
+    gwin_log_function_error("this function itself", "y is beyond the last row", -3, "gwin_write_pixel_to_virtual_screen()");
+    return (signed char)-3;
+  }
+
+  if(x < (signed short)0)
+  {
+    gwin_log_function_error("this function itself", "x is negative", -4, "gwin_write_pixel_to_virtual_screen()");
+    return (signed char)-4;
+  }
+
+  if(x >= _gwin_virtual_screens_table.virtual_screen_columns)
+  {
+    gwin_log_function_error("this function itself", "x is beyond the last column", -5, "gwin_write_pixel_to_virtual_screen()");
+    return (signed char)-5;
+  }
+
+  gwin_virtual_pixel *pixel = &which_virtual_screen->pixels[(size_t)y * (size_t)_gwin_virtual_screens_table.virtual_screen_columns
+                                                            + (size_t)x];
+
+  pixel->R = R;
+  pixel->G = G;
+  pixel->B = B;
 
   return (signed char)0;
 }
