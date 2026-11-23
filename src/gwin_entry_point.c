@@ -25,8 +25,6 @@ signed int main()
   snprintf(debug_buf, 64, "Started gwin entry point...");
   gwin_log(debug_buf);
 
-  gwin_display_P6_PPM_file_in_terminal("./a.ppm");
-
   getch();
 
   gwin_end_terminal_graphics();
