@@ -23,8 +23,7 @@ signed char gwin_init_terminal_graphics()
   signed char gwin_init_color_return = gwin_init_color();
   signed char gwin_init_logging_return = gwin_init_logging();
   signed char gwin_init_error_logging_return = gwin_init_error_logging();
-  signed char gwin_init_virtual_screens_return = gwin_init_virtual_screens();
-  signed char gwin_get_terminal_size_return = gwin_get_terminal_size(&(_gwin_terminal_capabilities.rows), 
+  signed char gwin_get_terminal_size_return = gwin_get_terminal_size(&(_gwin_terminal_capabilities.rows),
                                                                      &(_gwin_terminal_capabilities.columns));
 
   if(gwin_init_logging_return != (signed char)0)
@@ -42,7 +41,7 @@ signed char gwin_init_terminal_graphics()
   if(setlocale_return == (char *)NULL)
   {
     gwin_log_function_error("setlocale()", "returned error", (signed int)NULL, "gwin_init_terminal_graphics()");
-    
+
     return (signed char)-1;
   }
 
@@ -51,21 +50,21 @@ signed char gwin_init_terminal_graphics()
   if(cbreak_return != (int)OK)
   {
     gwin_log_function_error("cbreak()", "returned not OK", ERR, "gwin_init_terminal_graphics()");
-  
+
     return (signed char)-1;
   }
 
   if(noecho_return != (int)OK)
   {
     gwin_log_function_error("noecho()", "returned not OK", ERR, "gwin_init_terminal_graphics()");
-  
+
     return (signed char)-1;
   }
 
   if(curs_set_return == (int)ERR)
   {
     gwin_log_function_error("curs_set()", "returned ERR", ERR, "gwin_init_terminal_graphics()");
-  
+
     return (signed char)-1;
   }
 
@@ -84,11 +83,16 @@ signed char gwin_init_terminal_graphics()
     return (signed char)-1;
   }
 
+  _gwin_terminal_capabilities.logical_rows = _gwin_terminal_capabilities.rows * (signed short)2;
+  _gwin_terminal_capabilities.logical_columns = _gwin_terminal_capabilities.columns;
+
+  signed char gwin_init_virtual_screens_return = gwin_init_virtual_screens();
+
   if(gwin_init_virtual_screens_return != (signed char)0)
   {
-    gwin_log_function_error("gwin_init_virtual_screens()", "returned with error", 
+    gwin_log_function_error("gwin_init_virtual_screens()", "returned with error",
                             gwin_init_virtual_screens_return, "gwin_init_terminal_graphics()");
-  
+
     return (signed char)-1;
   }
 
@@ -97,13 +101,10 @@ signed char gwin_init_terminal_graphics()
   if(gwin_init_2D_drawing_coordinator_return != (signed char)0)
   {
     gwin_log_function_error("gwin_init_2D_drawing_coordinator()", "returned with error",
-                            gwin_init_2D_drawing_coordinator_return, "main()");
- 
+                            gwin_init_2D_drawing_coordinator_return, "gwin_init_terminal_graphics()");
+
     return (signed char)-1;
   }
-
-  _gwin_terminal_capabilities.logical_rows = _gwin_terminal_capabilities.rows * (signed short)2;
-  _gwin_terminal_capabilities.logical_columns = _gwin_terminal_capabilities.columns;
 
   return (signed char)0;
 }
@@ -140,5 +141,6 @@ signed char gwin_end_terminal_graphics()
   endwin();
 
   gwin_print_error_log();
-}
 
+  return (signed char)0;
+}

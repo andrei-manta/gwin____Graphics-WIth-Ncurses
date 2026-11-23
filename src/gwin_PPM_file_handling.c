@@ -1,10 +1,11 @@
 #include <math.h>
+#include <string.h>
+#include <stdlib.h>
 #include "gwin_pixels.h"
 #include "gwin_PPM_file_handling.h"
 #include "gwin_virtual_screens.h"
 #include "gwin_logging.h"
-#include <string.h>
-#include <stdlib.h>
+#include "gwin_error_handling.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 

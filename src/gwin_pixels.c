@@ -2,6 +2,7 @@
 #include "gwin_colors.h"
 #include "gwin_pixels.h"
 #include "gwin_terminal_capabilities.h"
+#include "gwin_error_handling.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 

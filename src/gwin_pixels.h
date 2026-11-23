@@ -1,6 +1,7 @@
 #ifndef GWIN_PIXELS_H
 #define GWIN_PIXELS_H
 
+#include "gwin_virtual_screens.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
