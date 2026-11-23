@@ -7,7 +7,7 @@
 #include "gwin_logging.h"
 #include "gwin_error_handling.h"
 #include "gwin_virtual_screens.h"
-#include "gwin_2D_drawing_coordinator.h"
+#include "gwin_2D_realtime_coordinator.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
@@ -96,12 +96,12 @@ signed char gwin_init_terminal_graphics()
     return (signed char)-1;
   }
 
-  signed char gwin_init_2D_drawing_coordinator_return = gwin_init_2D_drawing_coordinator();
+  signed char gwin_init_2D_realtime_queue_return = gwin_init_2D_realtime_queue();
 
-  if(gwin_init_2D_drawing_coordinator_return != (signed char)0)
+  if(gwin_init_2D_realtime_queue_return != (signed char)0)
   {
-    gwin_log_function_error("gwin_init_2D_drawing_coordinator()", "returned with error",
-                            gwin_init_2D_drawing_coordinator_return, "gwin_init_terminal_graphics()");
+    gwin_log_function_error("gwin_init_2D_realtime_queue()", "returned with error",
+                            gwin_init_2D_realtime_queue_return, "gwin_init_terminal_graphics()");
 
     return (signed char)-1;
   }

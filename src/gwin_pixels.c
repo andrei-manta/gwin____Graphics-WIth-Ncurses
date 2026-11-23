@@ -76,9 +76,23 @@ signed char gwin_write_virtual_screen_to_physical_screen(gwin_virtual_screen *wh
         return (signed char)-4;
       }
 
-      if(mvadd_wch((int)cell_y, (int)x, &physical_cell_contents) == ERR)
+      int write_return;
+      
+      if((int)cell_y == (int)_gwin_terminal_capabilities.rows - 1 &&
+        (int)x == (int)_gwin_terminal_capabilities.columns - 1)
       {
-        gwin_log_function_error("mvadd_wch()", "returned ERR", -1, "gwin_write_virtual_screen_to_physical_screen()");
+        // bottom-right cell: mvadd_wch() would return ERR because the cursor can't advance
+        write_return = mvins_wch((int)cell_y, (int)x, &physical_cell_contents);
+      }
+      else
+      {
+        write_return = mvadd_wch((int)cell_y, (int)x, &physical_cell_contents);
+      }
+      
+      if(write_return == ERR)
+      {
+        gwin_log_function_error("mvadd_wch()/mvins_wch()", "returned ERR", -1,
+                                "gwin_write_virtual_screen_to_physical_screen()");
         return (signed char)-5;
       }
     }

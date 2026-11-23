@@ -4,14 +4,13 @@
 #include "gwin_pixels.h"
 #include "gwin_error_handling.h"
 #include "gwin_2D_drawing.h"
-#include "gwin_2D_drawing_coordinator.h"
 #include "gwin_virtual_screens.h"
 #include "gwin_logging.h"
 #include "gwin_terminal_capabilities.h"
 #define _XOPEN_SOURCE_EXTENDED
 #include <ncursesw/ncurses.h>
 
-signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short start_x,
+signed char gwin_draw_line_made_of_one_color(gwin_virtual_screen *which_virtual_screen, signed short start_y, signed short start_x,
     signed short end_y, signed short end_x, unsigned char R, unsigned char G, unsigned char B)
 {
 
@@ -41,7 +40,7 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
     if (start_x == end_x)
     {
       signed char gwin_write_pixel_to_virtual_screen_return =
-      gwin_write_pixel_to_virtual_screen(_gwin_2D_drawing_coordinator.drawing_virtual_screen, start_y, start_x, R, G, B);
+      gwin_write_pixel_to_virtual_screen(which_virtual_screen, start_y, start_x, R, G, B);
       
       if(gwin_write_pixel_to_virtual_screen_return != (signed char)0)
       {
@@ -57,7 +56,7 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
     for(int i = 0; i <= (end_x > start_x ? end_x - start_x : start_x - end_x); i++)
     {
-      gwin_write_pixel_to_virtual_screen(_gwin_2D_drawing_coordinator.drawing_virtual_screen, start_y,
+      gwin_write_pixel_to_virtual_screen(which_virtual_screen, start_y,
           start_x + i * (end_x > start_x ? (int)1 : (int)-1), R, G, B);
     }
 
@@ -71,7 +70,7 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
     for(int i = 0; i <= (end_y > start_y ? end_y - start_y : start_y - end_y); i++)
     {
-      gwin_write_pixel_to_virtual_screen(_gwin_2D_drawing_coordinator.drawing_virtual_screen,
+      gwin_write_pixel_to_virtual_screen(which_virtual_screen,
           start_y + i * (end_y > start_y ? (int)1 : (int)-1), start_x, R, G, B);
     }
 
@@ -85,7 +84,7 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
   for(float i = 0.0; i < length_of_the_requested_line; i += 1.0)
   {
-    gwin_write_pixel_to_virtual_screen(_gwin_2D_drawing_coordinator.drawing_virtual_screen,
+    gwin_write_pixel_to_virtual_screen(which_virtual_screen,
         start_y + (int)roundf(y_slope_component * i), 
         start_x + (int)roundf(x_slope_component * i), R, G, B);
   }
@@ -94,7 +93,7 @@ signed char gwin_draw_line_made_of_one_color(signed short start_y, signed short 
 
 }
 
-signed char gwin_draw_point(signed short y, signed short x, unsigned char R, unsigned char G, unsigned char B)
+signed char gwin_draw_point(gwin_virtual_screen *which_virtual_screen, signed short y, signed short x, unsigned char R, unsigned char G, unsigned char B)
 {
   if(y < (signed short)0)
   {
@@ -105,12 +104,12 @@ signed char gwin_draw_point(signed short y, signed short x, unsigned char R, uns
     return (signed short)-1;
   }
 
-  gwin_write_pixel_to_virtual_screen(_gwin_2D_drawing_coordinator.drawing_virtual_screen, y, x, R, G, B);
+  gwin_write_pixel_to_virtual_screen(which_virtual_screen, y, x, R, G, B);
 
   return (signed char)0;
 }
 
-signed char gwin_draw_circle_made_of_one_color(signed short center_y, signed short center_x, 
+signed char gwin_draw_circle_made_of_one_color(gwin_virtual_screen *which_virtual_screen, signed short center_y, signed short center_x, 
     signed short pixel_radius, unsigned char R, unsigned char G, unsigned char B)
 {
   if(center_y < (signed short)0)
@@ -134,7 +133,7 @@ signed char gwin_draw_circle_made_of_one_color(signed short center_y, signed sho
       gwin_compute_as_float_distance_between_two_logical_pixels(center_y, center_x, rows, columns, &distance_to_circle_center_for_this_pixel);
       if(distance_to_circle_center_for_this_pixel <= (float)pixel_radius)
       {
-        gwin_write_pixel_to_virtual_screen(_gwin_2D_drawing_coordinator.drawing_virtual_screen, rows, columns, R, G, B);
+        gwin_write_pixel_to_virtual_screen(which_virtual_screen, rows, columns, R, G, B);
       }
     }
   }
