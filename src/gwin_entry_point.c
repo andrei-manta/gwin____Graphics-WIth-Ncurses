@@ -26,6 +26,11 @@ signed int main()
   snprintf(debug_buf, 64, "Started gwin entry point...");
   gwin_log(debug_buf);
 
+  gwin_virtual_screen *screen = (gwin_virtual_screen *)NULL;
+  gwin_request_virtual_screen(&screen);
+  gwin_draw_circle_made_of_one_color(screen, 20, 40, 10, 255, 0, 0);
+  gwin_2D_realtime_enqueue_virtual_screen(screen);
+
   signed char gwin_2D_realtime_run_return = gwin_2D_realtime_run((signed short)60);
 
   if(gwin_2D_realtime_run_return != (signed char)0)
